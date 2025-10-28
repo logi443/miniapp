@@ -15,7 +15,6 @@
   --white: #ffffff;
   --text: #222;
   --muted: #6b6b78;
-  --download-text: #FFD700; /* طلایی روشن برای متن دانلود */
 }
 *{box-sizing:border-box}
 html,body{height:100%}
@@ -117,9 +116,6 @@ body{
 .step-body p{ margin:6px 0; line-height:1.5; font-size:15px; }
 .step-body img.step-img{ display:block; width:100%; border-radius:8px; margin:8px 0 0 0; box-shadow: 0 8px 20px rgba(10,10,30,0.08); }
 
-/* متن دانلود با رنگ مشخص */
-.step-body .download-text{ color: var(--download-text); font-weight:700; font-size:16px; }
-
 .back{ margin-top:12px; display:inline-block; padding:10px 14px; border-radius:10px; border:1px solid var(--accent1); background:#fff; color:var(--accent1); font-weight:700; cursor:pointer; }
 
 .footer{ margin-top:10px; text-align:center; color:var(--muted); font-size:13px; }
@@ -127,6 +123,26 @@ body{
 
 .step-icon{ width:24px; height:24px; margin-left:6px; vertical-align:middle; }
 
+.download-card{
+  display:flex;
+  justify-content:center;
+  margin-top:12px;
+}
+.download-card a{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background: linear-gradient(135deg, var(--accent1), var(--accent2));
+  color:#fff;
+  border-radius:24px;
+  padding:12px 20px;
+  font-weight:700;
+  font-size:15px;
+  text-decoration:none;
+  width:100%;
+  max-width:260px;
+  gap:8px;
+}
 @media (max-width:420px){ .grid{grid-template-columns:1fr} }
 </style>
 </head>
@@ -179,70 +195,21 @@ const icons = {
   macOS: "https://img.icons8.com/ios-filled/50/000000/mac-os.png"
 };
 
-/* لینک دانلود جداگانه برای هر برنامه */
 const downloadLinks = {
-  Android: {
-    v2rayNg: "https://github.com/2dust/v2rayN/releases/download/7.15.6/v2rayN-windows-64-SelfContained.zip",
-    v2box: "https://play.google.com/store/apps/details?id=dev.hexasoftware.v2box"
-  },
-  iOS: {
-    v2box: "https://apps.apple.com/app/id6446814690",
-    Shadowrocket: "https://apps.apple.com/app/id932747118",
-    Streisand: "https://apps.apple.com/app/id6450534064"
-  },
-  Windows: {
-    V2rayN: "https://example.com/windows-download"
-  },
-  macOS: {
-    Streisand: "https://apps.apple.com/us/app/streisand/id6450534064"
-  }
+  Android: { v2rayNg:"https://play.google.com/store/apps/details?id=com.v2rayng", v2box:"https://play.google.com/store/apps/details?id=com.v2box" },
+  iOS: { v2box:"https://apps.apple.com/app/id_v2box", Shadowrocket:"https://apps.apple.com/app/id_shadowrocket", Streisand:"https://apps.apple.com/app/id_streisand" },
+  Windows: { V2rayN:"https://example.com/windows-download" },
+  macOS: { Streisand:"https://example.com/macos-download" }
 };
 
 const tutorials = {
-  Android: { v2rayNg: [
-      "منوی همبرگری ☰ بالا را بزنید.",
-      "از منوی همبرگری گزینه Setting را انتخاب کنید.",
-      "گزینه تنظیمات پیشرفته را بزنید و گزینه Allow insecure را فعال کنید.",
-      "به صفحه اصلی برگردید، مثبت بالا را بزنید و گزینه وارد کردن از کلیپ‌بورد را انتخاب کنید."
-    ],
-    v2box: [
-      "ستینگ برنامه را باز کنید.",
-      "گزینه Allow insecure را روشن کنید.",
-      "از بخش Configs مثبت بالا را بزنید و گزینه Import V2Ray URI from Clipboard را انتخاب کنید.",
-      "روی اسم کانفیگ بزنید و از پایین صفحه Slide to connect را به سمت راست بکشید."
-    ]
-  },
-  iOS: { v2box:[
-      "ستینگ برنامه را باز کنید.",
-      "گزینه Allow insecure را روشن کنید.",
-      "از بخش Configs مثبت بالا را بزنید و گزینه Import V2Ray URI from Clipboard را انتخاب کنید.",
-      "روی اسم کانفیگ بزنید و از پایین صفحه Slide to connect را به سمت راست بکشید."
-    ],
-    Shadowrocket:[
-      "روی منو Config بزنید و + بالا را بزنید، کانفیگ خود را Paste کرده و Download را بزنید.",
-      "به منوی Home برگردید، روی اسم کانفیگ لمس کنید و دکمه اتصال را بزنید.",
-      "اگر وصل نشد، روی علامت تعجب بزنید، گزینه TLS را انتخاب و Allow insecure را روشن کنید. سپس یک مرحله به عقب برگردید، Save را بزنید و متصل شوید."
-    ],
-    Streisand:[
-      "ستینگ برنامه را باز کنید.",
-      "از بالا گزینه سوم Subscription را انتخاب کنید.",
-      "گزینه‌های Update on open و Allow insecure را روشن کنید.",
-      "از تب Home مثبت بالا را بزنید و گزینه Import from clipboard را انتخاب کنید.",
-      "روی اسم کانفیگ لمس کنید و دکمه اتصال را بزنید."
-    ]
-  },
-  Windows:{ V2rayN:[
-      "این بخش نیاز به آموزش تصویری دارد. لطفاً ویدیوی زیر را مشاهده کنید."
-    ]
-  },
-  macOS:{ Streisand:[
-      "ستینگ برنامه را باز کنید.",
-      "از بالا گزینه سوم Subscription را انتخاب کنید.",
-      "گزینه‌های Update on open و Allow insecure را روشن کنید.",
-      "از تب Home مثبت بالا را بزنید و گزینه Import from clipboard را انتخاب کنید.",
-      "روی اسم کانفیگ لمس کنید و دکمه اتصال را بزنید."
-    ]
-  }
+  Android: { v2rayNg:["منوی همبرگری ☰ بالا را بزنید.","از منوی همبرگری گزینه Setting را انتخاب کنید.","گزینه تنظیمات پیشرفته را بزنید و گزینه Allow insecure را فعال کنید.","به صفحه اصلی برگردید، مثبت بالا را بزنید و گزینه وارد کردن از کلیپ‌بورد را انتخاب کنید."],
+            v2box:["ستینگ برنامه را باز کنید.","گزینه Allow insecure را روشن کنید.","از بخش Configs مثبت بالا را بزنید و گزینه Import V2Ray URI from Clipboard را انتخاب کنید.","روی اسم کانفیگ بزنید و از پایین صفحه Slide to connect را به سمت راست بکشید."]},
+  iOS: { v2box:["ستینگ برنامه را باز کنید.","گزینه Allow insecure را روشن کنید.","از بخش Configs مثبت بالا را بزنید و گزینه Import V2Ray URI from Clipboard را انتخاب کنید.","روی اسم کانفیگ بزنید و از پایین صفحه Slide to connect را به سمت راست بکشید."],
+         Shadowrocket:["روی منو Config بزنید و + بالا را بزنید، کانفیگ خود را Paste کرده و Download را بزنید.","به منوی Home برگردید، روی اسم کانفیگ لمس کنید و دکمه اتصال را بزنید.","اگر وصل نشد، روی علامت تعجب بزنید، گزینه TLS را انتخاب و Allow insecure را روشن کنید. سپس یک مرحله به عقب برگردید، Save را بزنید و متصل شوید."],
+         Streisand:["ستینگ برنامه را باز کنید.","از بالا گزینه سوم Subscription را انتخاب کنید.","گزینه‌های Update on open و Allow insecure را روشن کنید.","از تب Home مثبت بالا را بزنید و گزینه Import from clipboard را انتخاب کنید.","روی اسم کانفیگ لمس کنید و دکمه اتصال را بزنید."]},
+  Windows:{ V2rayN:["این بخش نیاز به آموزش تصویری دارد. لطفاً ویدیوی زیر را مشاهده کنید."] },
+  macOS:{ Streisand:["ستینگ برنامه را باز کنید.","از بالا گزینه سوم Subscription را انتخاب کنید.","گزینه‌های Update on open و Allow insecure را روشن کنید.","از تب Home مثبت بالا را بزنید و گزینه Import from clipboard را انتخاب کنید.","روی اسم کانفیگ لمس کنید و دکمه اتصال را بزنید."]}
 };
 
 let currentOS = null;
@@ -287,20 +254,14 @@ function renderTutorial(os, app){
     wrap.appendChild(stepCard);
   });
 
-  // کادر دانلود آخرین نسخه برای برنامه انتخابی
+  // کادر دانلود آخرین نسخه به صورت کامل قابل کلیک
   const downloadCard = document.createElement('div');
-  downloadCard.className = 'step-card';
-  const num = document.createElement('div');
-  num.className = 'step-num';
-  num.innerText = '🛠';
-  const body = document.createElement('div');
-  body.className = 'step-body';
-  body.innerHTML = `
-    <p class="download-text">برای دانلود آخرین نسخه برنامه روی دکمه زیر بزنید:</p>
-    <a href="${downloadLinks[os][app]}" target="_blank" class="btn">دانلود آخرین نسخه</a>
-  `;
-  downloadCard.appendChild(num);
-  downloadCard.appendChild(body);
+  downloadCard.className = 'download-card';
+  const downloadBtn = document.createElement('a');
+  downloadBtn.href = downloadLinks[os][app];
+  downloadBtn.target = "_blank";
+  downloadBtn.innerHTML = '⬇ دانلود آخرین ورژن';
+  downloadCard.appendChild(downloadBtn);
   wrap.appendChild(downloadCard);
 }
 
