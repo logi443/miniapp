@@ -166,14 +166,28 @@ body{
 </div>
 
 <script>
-const appIcons = {
-  v2rayNg: "https://raw.githubusercontent.com/2dust/v2rayNG/master/app/src/main/res/mipmap-xxhdpi/ic_launcher.png",
-  v2box: "https://is1-ssl.mzstatic.com/image/thumb/Purple116/v4/30/7f/9f/307f9f91-d648-6d5f-87a0-37902b177a4b/AppIcon-0-1x_U007emarketing-0-7-0-85-220.png/512x512bb.jpg",
-  Shadowrocket: "https://is1-ssl.mzstatic.com/image/thumb/Purple116/v4/92/b3/4d/92b34d6e-3c7f-6c7c-8b16-0cb7f94b3cb1/AppIcon-0-1x_U007emarketing-0-10-0-85-220.png/512x512bb.jpg",
-  Streisand: "https://is1-ssl.mzstatic.com/image/thumb/Purple126/v4/89/06/11/89061134-5d1e-63ff-44d1-7a3a045d1b25/AppIcon-0-1x_U007emarketing-0-7-0-85-220.png/512x512bb.jpg",
-  V2rayN: "https://github.com/2dust/v2rayN/blob/master/v2rayN/v2rayN/Resources/icon.ico?raw=true"
+// --- آیکون‌ها (منابع چندگانه برای پایداری) ---
+const appIconSources = {
+  v2rayNg: [
+    "https://cdn.jsdelivr.net/gh/2dust/v2rayNG/app/src/main/res/mipmap-xxhdpi/ic_launcher.png",
+    "https://raw.githubusercontent.com/2dust/v2rayNG/master/app/src/main/res/mipmap-xxhdpi/ic_launcher.png"
+  ],
+  v2box: [
+    "https://is1-ssl.mzstatic.com/image/thumb/Purple116/v4/30/7f/9f/307f9f91-d648-6d5f-87a0-37902b177a4b/AppIcon-0-1x_U007emarketing-0-7-0-85-220.png/256x256bb.jpg"
+  ],
+  Shadowrocket: [
+    "https://is1-ssl.mzstatic.com/image/thumb/Purple116/v4/92/b3/4d/92b34d6e-3c7f-6c7c-8b16-0cb7f94b3cb1/AppIcon-0-1x_U007emarketing-0-10-0-85-220.png/256x256bb.jpg"
+  ],
+  Streisand: [
+    "https://is1-ssl.mzstatic.com/image/thumb/Purple126/v4/89/06/11/89061134-5d1e-63ff-44d1-7a3a045d1b25/AppIcon-0-1x_U007emarketing-0-7-0-85-220.png/256x256bb.jpg"
+  ],
+  V2rayN: [
+    "https://cdn.jsdelivr.net/gh/2dust/v2rayN/v2rayN/v2rayN/Resources/icon.ico",
+    "https://raw.githubusercontent.com/2dust/v2rayN/master/v2rayN/v2rayN/Resources/icon.ico"
+  ]
 };
 
+// --- لیست اپ‌ها ---
 const appsByOS = {
   Android: ["v2rayNg","v2box"],
   iOS: ["v2box","Shadowrocket","Streisand"],
@@ -181,6 +195,7 @@ const appsByOS = {
   macOS: ["Streisand","Shadowrocket"]
 };
 
+// --- لینک دانلود (بدون تکرار) ---
 const downloadLinks = {
   Android: { v2rayNg: "https://logi443.github.io/v2ray", v2box: "https://play.google.com/store/apps/details?id=dev.hexasoftware.v2box" },
   iOS: { v2box: "https://apps.apple.com/app/id6446814690", Shadowrocket: "https://apps.apple.com/app/id932747118", Streisand: "https://apps.apple.com/app/id6450534064" },
@@ -188,6 +203,7 @@ const downloadLinks = {
   macOS: { Streisand: "https://apps.apple.com/us/app/streisand/id6450534064", Shadowrocket: "https://apps.apple.com/app/id932747118" }
 };
 
+// --- متن آموزش ---
 const tutorials = {
   Android: { v2rayNg:["منوی همبرگری ☰ بالا را بزنید.","از منوی همبرگری گزینه Setting را انتخاب کنید.","گزینه تنظیمات پیشرفته را بزنید و گزینه Allow insecure را فعال کنید.","به صفحه اصلی برگردید، مثبت بالا را بزنید و گزینه وارد کردن از کلیپ‌بورد را انتخاب کنید."], v2box:["ستینگ برنامه را باز کنید.","گزینه Allow insecure را روشن کنید.","از بخش Configs مثبت بالا را بزنید و گزینه Import V2Ray URI from Clipboard را انتخاب کنید.","روی اسم کانفیگ بزنید و از پایین صفحه Slide to connect را به سمت راست بکشید."]},
   iOS: { v2box:["ستینگ برنامه را باز کنید.","گزینه Allow insecure را روشن کنید.","از بخش Configs مثبت بالا را بزنید و گزینه Import V2Ray URI from Clipboard را انتخاب کنید.","روی اسم کانفیگ بزنید و از پایین صفحه Slide to connect را به سمت راست بکشید."], Shadowrocket:["روی منو Config بزنید و + بالا را بزنید، کانفیگ خود را Paste کرده و Download را بزنید.","به منوی Home برگردید، روی اسم کانفیگ لمس کنید و دکمه اتصال را بزنید.","اگر وصل نشد، روی علامت تعجب بزنید، گزینه TLS را انتخاب و Allow insecure را روشن کنید. سپس یک مرحله به عقب برگردید، Save را بزنید و متصل شوید."], Streisand:["ستینگ برنامه را باز کنید.","از بالا گزینه سوم Subscription را انتخاب کنید.","گزینه‌های Update on open و Allow insecure را روشن کنید.","از تب Home مثبت بالا را بزنید و گزینه Import from clipboard را انتخاب کنید.","روی اسم کانفیگ لمس کنید و دکمه اتصال را بزنید."]},
@@ -197,19 +213,16 @@ const tutorials = {
 
 let currentOS = null;
 
-function buildIcon(app){
+// کمکی: ساخت آیکون بدون خطا
+function createIcon(app){
   const urls = appIconSources[app] || [];
+  if(!urls.length) return null;
   const img = document.createElement('img');
   img.width = 24; img.height = 24; img.style.borderRadius = '6px';
   img.referrerPolicy = 'no-referrer';
   let i = 0;
   function tryNext(){
-    if(i < urls.length){
-      img.src = urls[i++];
-    } else {
-      // fallback به یک حرف اول نام اپ
-      img.remove();
-    }
+    if(i < urls.length){ img.src = urls[i++]; } else { img.style.display = 'none'; }
   }
   img.onerror = tryNext;
   tryNext();
@@ -226,8 +239,8 @@ function selectOS(os){
   apps.forEach(app=>{
     const b = document.createElement('button');
     b.className = 'btn';
-    const iconEl = buildIcon(app);
-    if(iconEl){ b.appendChild(iconEl); }
+    const icon = createIcon(app);
+    if(icon) b.appendChild(icon);
     const label = document.createElement('span');
     label.textContent = app;
     b.appendChild(label);
