@@ -1,238 +1,439 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="fa" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>M-VPN راهنمای اتصال</title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>M-VPN — راهنمای اتصال</title>
+
+<!-- IranSans (CDN) -->
+<link rel="preload" href="https://cdn.jsdelivr.net/gh/rastikerdar/iransans-font@v1.0.5/dist/font-face.css" as="style">
 <style>
 @import url('https://cdn.jsdelivr.net/gh/rastikerdar/iransans-font@v1.0.5/dist/font-face.css');
 
-body {
-  font-family: 'IranSans', sans-serif;
-  background-color: #fff;
-  color: #333;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-  min-height: 100vh;
+/* Reset & base */
+:root{
+  --accent1: #6b5cff; /* بنفش مایل به آبی (تیره) */
+  --accent2: #5ac8ff; /* آبی روشن */
+  --card-bg: linear-gradient(135deg, var(--accent1), var(--accent2));
+  --white: #ffffff;
+  --text: #222;
+  --muted: #6b6b78;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;
+  font-family: "IranSans", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  background:#fff;
+  color:var(--text);
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+  display:flex;
+  align-items:flex-start;
+  justify-content:center;
+  padding:28px 16px;
 }
 
-h1 {
-  margin-top: 40px;
-  font-size: 24px;
-  text-align: center;
-  opacity: 0;
-  animation: fadeInWords 3s ease-in-out forwards;
-  background: -webkit-linear-gradient(#ff6b35, #d93a3a);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+/* layout */
+.app{
+  width:100%;
+  max-width:520px;
 }
 
-@keyframes fadeInWords {
-  0% { opacity: 0; transform: translateY(10px); }
-  100% { opacity: 1; transform: translateY(0); }
+/* Title with fade-in per word */
+.title{
+  text-align:center;
+  margin:18px 0;
+  font-size:22px;
+  line-height:1.2;
+  font-weight:700;
+}
+.title .word{
+  display:inline-block;
+  opacity:0;
+  transform:translateY(8px);
+  animation:fadeword 900ms ease forwards;
+}
+.title .word.w1{ animation-delay: 0ms; }
+.title .word.w2{ animation-delay: 220ms; }
+.title .word.w3{ animation-delay: 440ms; }
+.title .word.w4{ animation-delay: 660ms; }
+/* small subtle glow using gradient text */
+.title .word{
+  background: linear-gradient(90deg, var(--accent1), var(--accent2));
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+}
+@keyframes fadeword{
+  to { opacity:1; transform:translateY(0); }
 }
 
-.container {
-  margin-top: 40px;
-  background: linear-gradient(135deg, #ff6b35, #d93a3a);
-  padding: 20px;
-  border-radius: 12px;
-  width: 90%;
-  max-width: 420px;
-  color: #fff;
-  box-shadow: 0 0 10px rgba(0,0,0,0.2);
+/* white card for main area */
+.card{
+  background:#fff;
+  border-radius:14px;
+  padding:18px;
+  box-shadow: 0 8px 28px rgba(20,20,60,0.06);
+  margin-bottom:18px;
 }
 
-button {
-  font-family: 'IranSans';
-  width: 100%;
-  padding: 12px;
-  margin: 8px 0;
-  border: none;
-  border-radius: 8px;
-  background: #fff;
-  color: #d93a3a;
-  font-size: 16px;
-  cursor: pointer;
-  transition: 0.3s;
+/* OS selection */
+.grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:12px;
 }
-button:hover {
-  background: #f5f5f5;
+.btn {
+  display:inline-block;
+  width:100%;
+  padding:12px 14px;
+  border-radius:10px;
+  border:1px solid rgba(107,92,255,0.12);
+  background: linear-gradient(180deg, rgba(107,92,255,0.06), rgba(90,200,255,0.02));
+  color:var(--accent1);
+  font-weight:700;
+  cursor:pointer;
+  text-align:center;
+}
+.btn:active{ transform:translateY(1px) }
+
+/* container for steps (colored) */
+.tutorial-wrap{
+  margin-top:12px;
+  display:flex;
+  flex-direction:column;
+  gap:12px;
 }
 
-.step-img {
-  width: 100%;
-  border-radius: 8px;
-  margin: 10px 0;
-  box-shadow: 0 0 8px rgba(0,0,0,0.2);
+/* step card (colored gradient) */
+.step-card{
+  display:flex;
+  gap:12px;
+  align-items:flex-start;
+  background: var(--card-bg);
+  color:var(--white);
+  border-radius:12px;
+  padding:14px;
+  box-shadow: 0 8px 20px rgba(107,92,255,0.12);
 }
 
-footer {
-  margin-top: auto;
-  font-size: 14px;
-  text-align: center;
-  padding: 20px 0;
+/* step number circle (white) */
+.step-num{
+  min-width:44px;
+  height:44px;
+  border-radius:50%;
+  background:var(--white);
+  color:var(--accent1);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:800;
+  font-size:16px;
+  flex-shrink:0;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.08);
 }
-footer a {
-  color: #d93a3a;
-  font-weight: bold;
-  text-decoration: underline;
+
+/* step text area */
+.step-body{
+  flex:1;
+}
+.step-body p{
+  margin:6px 0;
+  line-height:1.5;
+  font-size:15px;
+}
+
+/* image placeholder styling */
+.step-img{
+  display:block;
+  width:100%;
+  border-radius:8px;
+  margin:8px 0 0 0;
+  box-shadow: 0 8px 20px rgba(10,10,30,0.08);
+}
+
+/* back button */
+.back{
+  margin-top:12px;
+  display:inline-block;
+  padding:10px 14px;
+  border-radius:10px;
+  border:1px solid var(--accent1);
+  background:#fff;
+  color:var(--accent1);
+  font-weight:700;
+  cursor:pointer;
+}
+
+/* footer */
+.footer{
+  margin-top:10px;
+  text-align:center;
+  color:var(--muted);
+  font-size:13px;
+}
+.footer a{ color:var(--accent1); text-decoration:underline; font-weight:700; }
+
+/* responsive */
+@media (max-width:420px){
+  .grid{grid-template-columns:1fr}
 }
 </style>
 </head>
 <body>
+  <div class="app">
+    <!-- Title -->
+    <div class="title" aria-hidden="true">
+      <!-- split into words for staggered fade -->
+      <span class="word w1">راهنمای</span>&nbsp;
+      <span class="word w2">اتصال</span>&nbsp;
+      <span class="word w3">سرویس‌های</span>&nbsp;
+      <span class="word w4">M-VPN</span>
+    </div>
 
-<h1 id="title">راهنمای اتصال سرویس‌های M-VPN</h1>
+    <!-- Step 1: Select OS -->
+    <div id="step-os" class="card">
+      <div style="font-weight:700;margin-bottom:8px">۱ — سیستم‌عامل خود را انتخاب کنید</div>
+      <div class="grid">
+        <button class="btn" onclick="selectOS('Android')">Android</button>
+        <button class="btn" onclick="selectOS('iOS')">iOS</button>
+        <button class="btn" onclick="selectOS('Windows')">Windows</button>
+        <button class="btn" onclick="selectOS('macOS')">macOS</button>
+      </div>
+    </div>
 
-<div class="container" id="app">
-  <div id="step1">
-    <p>سیستم عامل خود را انتخاب کنید:</p>
-    <button onclick="selectOS('Android')">Android</button>
-    <button onclick="selectOS('iOS')">iOS</button>
-    <button onclick="selectOS('Windows')">Windows</button>
-    <button onclick="selectOS('macOS')">macOS</button>
+    <!-- Step 2: Select App -->
+    <div id="step-app" class="card" style="display:none">
+      <div style="font-weight:700;margin-bottom:8px">۲ — برنامه‌ خود را انتخاب کنید</div>
+      <div id="apps" class="grid"></div>
+      <button class="back" onclick="goBack(1)">بازگشت</button>
+    </div>
+
+    <!-- Step 3: Tutorial -->
+    <div id="step-tutorial" class="card" style="display:none">
+      <div style="font-weight:700;margin-bottom:8px">۳ — آموزش گام‌به‌گام</div>
+      <div id="tutorial-area" class="tutorial-wrap">
+        <!-- steps inserted here -->
+      </div>
+
+      <button class="back" style="margin-top:12px" onclick="goBack(2)">بازگشت</button>
+    </div>
+
+    <div class="footer">طراحی شده توسط تیم <a href="https://t.me/nv444" target="_blank" rel="noopener">M-VPN</a></div>
   </div>
-
-  <div id="step2" style="display:none;">
-    <p>برنامه مورد نظر را انتخاب کنید:</p>
-    <div id="apps"></div>
-    <button onclick="goBack(1)">بازگشت</button>
-  </div>
-
-  <div id="step3" style="display:none;">
-    <div id="tutorial"></div>
-    <button onclick="goBack(2)">بازگشت</button>
-  </div>
-</div>
-
-<footer>
-  طراحی شده توسط تیم <a href="https://t.me/nv444" target="_blank">M-VPN</a>
-</footer>
 
 <script>
+/* App data (user-provided content) */
+/* Note: where you see <!-- image1 --> etc in prior versions,
+   here we will insert <img src="..."> dynamically if you set image links.
+   To add images: modify the `assets` object below with URLs for target combos. */
+
 const appsByOS = {
-  Android: ["v2rayNg", "v2box"],
-  iOS: ["v2box", "Shadowrocket", "Streisand"],
+  Android: ["v2rayNg","v2box"],
+  iOS: ["v2box","Shadowrocket","Streisand"],
   Windows: ["V2rayN"],
   macOS: ["Streisand"]
 };
 
+/* Tutorials HTML — includes numbered step texts.
+   Each step is a string (plain HTML). Comments like <!-- image1 --> left intentionally;
+   to add image: set assets[os][app] = ['https://.../img1.jpg', '...'] and the renderer will insert them.
+*/
 const tutorials = {
   Android: {
-    v2rayNg: `
-      <p>۱- منوی همبرگری ☰ بالا را بزنید.</p>
-      <!-- image1 -->
-      <p>۲- از منوی همبرگری گزینه Setting را انتخاب کنید.</p>
-      <!-- image2 -->
-      <p>۳- گزینه تنظیمات پیشرفته را بزنید و گزینه Allow insecure را فعال کنید.</p>
-      <!-- image3 -->
-      <p>۴- به صفحه اصلی برگردید، مثبت بالا را بزنید و گزینه وارد کردن از کلیپ بورد را انتخاب کنید.</p>
-      <!-- image4 -->
-    `,
-    v2box: `
-      <p>۱- ستینگ برنامه را باز کنید.</p>
-      <!-- image1 -->
-      <p>۲- گزینه Allow insecure را روشن کنید.</p>
-      <!-- image2 -->
-      <p>۳- از بخش Configs مثبت بالا را بزنید و گزینه Import V2Ray URI from Clipboard را انتخاب کنید.</p>
-      <!-- image3 -->
-      <p>۴- روی اسم کانفیگ بزنید و از پایین صفحه Slide to connect را به سمت راست بکشید.</p>
-      <!-- image4 -->
-    `
+    v2rayNg: [
+      "منوی همبرگری ☰ بالا را بزنید.",
+      "از منوی همبرگری گزینه Setting را انتخاب کنید.",
+      "گزینه تنظیمات پیشرفته را بزنید و گزینه Allow insecure را فعال کنید.",
+      "به صفحه اصلی برگردید، مثبت بالا را بزنید و گزینه وارد کردن از کلیپ‌بورد را انتخاب کنید."
+    ],
+    v2box: [
+      "ستینگ برنامه را باز کنید.",
+      "گزینه Allow insecure را روشن کنید.",
+      "از بخش Configs مثبت بالا را بزنید و گزینه Import V2Ray URI from Clipboard را انتخاب کنید.",
+      "روی اسم کانفیگ بزنید و از پایین صفحه Slide to connect را به سمت راست بکشید."
+    ]
   },
   iOS: {
-    v2box: `
-      <p>۱- ستینگ برنامه را باز کنید.</p>
-      <!-- image1 -->
-      <p>۲- گزینه Allow insecure را روشن کنید.</p>
-      <!-- image2 -->
-      <p>۳- از بخش Configs مثبت بالا را بزنید و گزینه Import V2Ray URI from Clipboard را انتخاب کنید.</p>
-      <!-- image3 -->
-      <p>۴- روی اسم کانفیگ بزنید و از پایین صفحه Slide to connect را به سمت راست بکشید.</p>
-      <!-- image4 -->
-    `,
-    Shadowrocket: `
-      <p>۱- روی منو Config بزنید و + بالا را بزنید، کانفیگ خود را Paste کرده و Download را بزنید.</p>
-      <!-- image1 -->
-      <p>۲- به منوی Home برگردید، روی اسم کانفیگ لمس کنید و دکمه اتصال را بزنید.</p>
-      <!-- image2 -->
-      <p>۳- اگر وصل نشد، روی علامت تعجب بزنید، گزینه TLS را انتخاب و Allow insecure را روشن کنید.</p>
-      <!-- image3 -->
-      <p>سپس یک مرحله به عقب برگردید، Save را بزنید و متصل شوید.</p>
-      <!-- image4 -->
-    `,
-    Streisand: `
-      <p>۱- ستینگ برنامه را باز کنید.</p>
-      <!-- image1 -->
-      <p>۲- از بالا گزینه سوم Subscription را انتخاب کنید.</p>
-      <!-- image2 -->
-      <p>۳- گزینه‌های Update on open و Allow insecure را روشن کنید.</p>
-      <!-- image3 -->
-      <p>۴- از تب Home مثبت بالا را بزنید و گزینه Import from clipboard را انتخاب کنید.</p>
-      <!-- image4 -->
-      <p>۵- روی اسم کانفیگ لمس کنید و دکمه اتصال را بزنید.</p>
-      <!-- image5 -->
-    `
+    v2box: [
+      "ستینگ برنامه را باز کنید.",
+      "گزینه Allow insecure را روشن کنید.",
+      "از بخش Configs مثبت بالا را بزنید و گزینه Import V2Ray URI from Clipboard را انتخاب کنید.",
+      "روی اسم کانفیگ بزنید و از پایین صفحه Slide to connect را به سمت راست بکشید."
+    ],
+    Shadowrocket: [
+      "روی منو Config بزنید و + بالا را بزنید، کانفیگ خود را Paste کرده و Download را بزنید.",
+      "به منوی Home برگردید، روی اسم کانفیگ لمس کنید و دکمه اتصال را بزنید.",
+      "اگر وصل نشد، روی علامت تعجب بزنید، گزینه TLS را انتخاب و Allow insecure را روشن کنید. سپس یک مرحله به عقب برگردید، Save را بزنید و متصل شوید."
+    ],
+    Streisand: [
+      "ستینگ برنامه را باز کنید.",
+      "از بالا گزینه سوم Subscription را انتخاب کنید.",
+      "گزینه‌های Update on open و Allow insecure را روشن کنید.",
+      "از تب Home مثبت بالا را بزنید و گزینه Import from clipboard را انتخاب کنید.",
+      "روی اسم کانفیگ لمس کنید و دکمه اتصال را بزنید."
+    ]
   },
   Windows: {
-    V2rayN: `
-      <p>این بخش نیاز به آموزش تصویری دارد. لطفاً ویدیوی زیر را مشاهده کنید.</p>
-      <!-- video placeholder -->
-      <video controls src="YOUR_VIDEO_LINK_HERE" class="step-img"></video>
-    `
+    V2rayN: [
+      "این بخش نیاز به آموزش تصویری دارد. لطفاً ویدیوی زیر را مشاهده کنید.",
+      /* video placeholder will be rendered if assets[Windows].V2rayN.video set */
+    ]
   },
   macOS: {
-    Streisand: `
-      <p>۱- ستینگ برنامه را باز کنید.</p>
-      <!-- image1 -->
-      <p>۲- از بالا گزینه سوم Subscription را انتخاب کنید.</p>
-      <!-- image2 -->
-      <p>۳- گزینه‌های Update on open و Allow insecure را روشن کنید.</p>
-      <!-- image3 -->
-      <p>۴- از تب Home مثبت بالا را بزنید و گزینه Import from clipboard را انتخاب کنید.</p>
-      <!-- image4 -->
-      <p>۵- روی اسم کانفیگ لمس کنید و دکمه اتصال را بزنید.</p>
-      <!-- image5 -->
-    `
+    Streisand: [
+      "ستینگ برنامه را باز کنید.",
+      "از بالا گزینه سوم Subscription را انتخاب کنید.",
+      "گزینه‌های Update on open و Allow insecure را روشن کنید.",
+      "از تب Home مثبت بالا را بزنید و گزینه Import from clipboard را انتخاب کنید.",
+      "روی اسم کانفیگ لمس کنید و دکمه اتصال را بزنید."
+    ]
   }
 };
 
-let currentOS = "";
+/* Optional assets object: برای هر ترکیب می‌تونی آرایه‌ای از لینک عکس بذاری
+   مثلاً: assets.Android = { v2box: ['https://.../img1.jpg','https://.../img2.jpg', ... ] }
+   و برای ویندوز می‌تونی: assets.Windows = { V2rayN: { video: 'https://.../vid.mp4' } }
+   اگر خالی بمونه، فقط متن نمایش داده میشه.
+*/
+const assets = {
+  Android: {
+    v2rayNg: [], // ['https://.../v2rayng_step1.jpg', ...]
+    v2box: []
+  },
+  iOS: {
+    v2box: [],
+    Shadowrocket: [],
+    Streisand: []
+  },
+  Windows: {
+    V2rayN: { video: '' } // 'https://.../v2rayn_tutorial.mp4'
+  },
+  macOS: {
+    Streisand: []
+  }
+};
 
-function selectOS(os) {
+/* UI logic */
+let currentOS = null;
+
+function selectOS(os){
   currentOS = os;
-  document.getElementById('step1').style.display = 'none';
-  document.getElementById('step2').style.display = 'block';
+  document.getElementById('step-os').style.display = 'none';
+  document.getElementById('step-app').style.display = 'block';
   const appsDiv = document.getElementById('apps');
   appsDiv.innerHTML = '';
-  appsByOS[os].forEach(app => {
-    const btn = document.createElement('button');
-    btn.innerText = app;
-    btn.onclick = () => selectApp(app);
-    appsDiv.appendChild(btn);
+  (appsByOS[os]||[]).forEach(app=>{
+    const b = document.createElement('button');
+    b.className = 'btn';
+    b.innerText = app;
+    b.onclick = ()=> selectApp(app);
+    appsDiv.appendChild(b);
   });
+  // ensure grid layout
+  appsDiv.style.display = 'grid';
+  appsDiv.style.gridTemplateColumns = window.innerWidth < 420 ? '1fr' : '1fr 1fr';
+  appsDiv.style.gap = '12px';
 }
 
-function selectApp(app) {
-  document.getElementById('step2').style.display = 'none';
-  document.getElementById('step3').style.display = 'block';
-  document.getElementById('tutorial').innerHTML = tutorials[currentOS][app];
+function selectApp(app){
+  document.getElementById('step-app').style.display = 'none';
+  document.getElementById('step-tutorial').style.display = 'block';
+  renderTutorial(currentOS, app);
 }
 
-function goBack(step) {
-  if (step === 1) {
-    document.getElementById('step1').style.display = 'block';
-    document.getElementById('step2').style.display = 'none';
-  } else if (step === 2) {
-    document.getElementById('step2').style.display = 'block';
-    document.getElementById('step3').style.display = 'none';
+/* render tutorial with numbered colored boxes and optional images/videos */
+function renderTutorial(os, app){
+  const wrap = document.getElementById('tutorial-area');
+  wrap.innerHTML = ''; // clear
+  const steps = (tutorials[os] && tutorials[os][app]) || [];
+  const appAssets = (assets[os] && assets[os][app]) || [];
+
+  // For each textual step, create a colored card with number
+  steps.forEach((text, idx) => {
+    const stepCard = document.createElement('div');
+    stepCard.className = 'step-card';
+
+    const num = document.createElement('div');
+    num.className = 'step-num';
+    num.innerText = (idx+1);
+
+    const body = document.createElement('div');
+    body.className = 'step-body';
+    // set HTML safe (we control content)
+    body.innerHTML = `<p>${text}</p>`;
+
+    // append optional image if exists at same index
+    const maybeImg = Array.isArray(appAssets) ? appAssets[idx] : null;
+    if(maybeImg){
+      const img = document.createElement('img');
+      img.className = 'step-img';
+      img.src = maybeImg;
+      img.alt = 'تصویر راهنما';
+      body.appendChild(img);
+    }
+
+    stepCard.appendChild(num);
+    stepCard.appendChild(body);
+    wrap.appendChild(stepCard);
+  });
+
+  // special handling: Windows video placeholder
+  if(os === 'Windows' && app === 'V2rayN'){
+    // if user set a video link in assets.Windows.V2rayN.video, show it below steps area
+    const v = assets.Windows && assets.Windows.V2rayN && assets.Windows.V2rayN.video;
+    if(v){
+      const vidCard = document.createElement('div');
+      vidCard.className = 'step-card';
+      const num = document.createElement('div');
+      num.className = 'step-num';
+      num.innerText = '—';
+      const body = document.createElement('div');
+      body.className = 'step-body';
+      const vid = document.createElement('video');
+      vid.className = 'step-img';
+      vid.controls = true;
+      vid.src = v;
+      body.appendChild(vid);
+      vidCard.appendChild(num);
+      vidCard.appendChild(body);
+      wrap.appendChild(vidCard);
+    } else {
+      // show placeholder card with instructions to paste video link in assets
+      const vidCard = document.createElement('div');
+      vidCard.className = 'step-card';
+      const num = document.createElement('div');
+      num.className = 'step-num';
+      num.innerText = '—';
+      const body = document.createElement('div');
+      body.className = 'step-body';
+      body.innerHTML = '<p>این بخش به ویدیو آموزشی نیاز دارد. برای اضافه کردن ویدیو، لینک ویدیوی خود را در متغیر <code>assets.Windows.V2rayN.video</code> قرار دهید.</p>';
+      vidCard.appendChild(num);
+      vidCard.appendChild(body);
+      wrap.appendChild(vidCard);
+    }
   }
 }
-</script>
 
+/* go back step */
+function goBack(step){
+  if(step === 1){
+    document.getElementById('step-os').style.display = 'block';
+    document.getElementById('step-app').style.display = 'none';
+  } else if(step === 2){
+    document.getElementById('step-app').style.display = 'block';
+    document.getElementById('step-tutorial').style.display = 'none';
+  }
+}
+
+/* Optional: small accessibility — pause title animation when user prefers reduced motion */
+if(window.matchMedia && window.matchMedia('(prefers-reduced-motion)').matches){
+  document.querySelectorAll('.title .word').forEach(w=> {
+    w.style.animation = 'none';
+    w.style.opacity = 1;
+    w.style.transform = 'none';
+  });
+}
+</script>
 </body>
 </html>
