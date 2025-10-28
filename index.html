@@ -1,336 +1,238 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>مینی‌اپ راهنمای VPN</title>
-  <style>
-    :root{--bg:#f7f7fb;--card:#ffffff;--accent:#1565c0;--muted:#666;}
-    *{box-sizing:border-box;font-family: Vazir, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;}
-    body{margin:0;background:var(--bg);color:#111;min-height:100vh;display:flex;align-items:flex-start;justify-content:center;padding:24px}
-    .app{width:100%;max-width:520px}
-    header{display:flex;align-items:center;gap:12px}
-    h1{font-size:18px;margin:0}
-    .card{background:var(--card);border-radius:12px;padding:16px;margin-top:12px;box-shadow:0 6px 18px rgba(20,20,40,0.06)}
-    .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
-    button.option{padding:14px;border-radius:10px;border:1px solid #eee;background:#fff;cursor:pointer;font-weight:600}
-    .muted{color:var(--muted);font-size:13px;margin-top:6px}
-    .hidden{display:none}
-    .steps{counter-reset:step;display:flex;flex-direction:column;gap:12px}
-    .step{background:#fafafa;padding:12px;border-radius:8px;border:1px solid #f0f0f0}
-    .step::before{counter-increment:step;content:counter(step);display:inline-block;width:28px;height:28px;border-radius:50%;background:var(--accent);color:white;text-align:center;line-height:28px;margin-left:8px;font-weight:700}
-    .actions{display:flex;gap:8px;margin-top:12px}
-    .btn{flex:1;padding:12px;border-radius:10px;border:0;cursor:pointer;font-weight:700}
-    .btn.primary{background:var(--accent);color:#fff}
-    .btn.ghost{background:transparent;border:1px solid #ddd}
-    footer{margin-top:18px;text-align:center;color:var(--muted);font-size:13px}
-    .small{font-size:13px;color:var(--muted)}
-    .video{width:100%;border-radius:8px;overflow:hidden;margin-top:8px}
-    @media (max-width:420px){ .grid{grid-template-columns:1fr 1fr}}
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>M-VPN راهنمای اتصال</title>
+<style>
+@import url('https://cdn.jsdelivr.net/gh/rastikerdar/iransans-font@v1.0.5/dist/font-face.css');
+
+body {
+  font-family: 'IranSans', sans-serif;
+  background-color: #fff;
+  color: #333;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  min-height: 100vh;
+}
+
+h1 {
+  margin-top: 40px;
+  font-size: 24px;
+  text-align: center;
+  opacity: 0;
+  animation: fadeInWords 3s ease-in-out forwards;
+  background: -webkit-linear-gradient(#ff6b35, #d93a3a);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+@keyframes fadeInWords {
+  0% { opacity: 0; transform: translateY(10px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+.container {
+  margin-top: 40px;
+  background: linear-gradient(135deg, #ff6b35, #d93a3a);
+  padding: 20px;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 420px;
+  color: #fff;
+  box-shadow: 0 0 10px rgba(0,0,0,0.2);
+}
+
+button {
+  font-family: 'IranSans';
+  width: 100%;
+  padding: 12px;
+  margin: 8px 0;
+  border: none;
+  border-radius: 8px;
+  background: #fff;
+  color: #d93a3a;
+  font-size: 16px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+button:hover {
+  background: #f5f5f5;
+}
+
+.step-img {
+  width: 100%;
+  border-radius: 8px;
+  margin: 10px 0;
+  box-shadow: 0 0 8px rgba(0,0,0,0.2);
+}
+
+footer {
+  margin-top: auto;
+  font-size: 14px;
+  text-align: center;
+  padding: 20px 0;
+}
+footer a {
+  color: #d93a3a;
+  font-weight: bold;
+  text-decoration: underline;
+}
+</style>
 </head>
 <body>
-  <div class="app card" id="app">
-    <header>
-      <div style="flex:1">
-        <h1>راهنمای نصب VPN</h1>
-        <div class="small">مراحل را انتخاب کنید تا آموزش مناسب برای شما نمایش داده شود</div>
-      </div>
-      <div id="telegram-status" style="text-align:left"></div>
-    </header>
 
-    <!-- Step 1: Select OS -->
-    <section id="step-os" class="card">
-      <div style="font-weight:700;margin-bottom:8px">۱. سیستم‌عامل خود را انتخاب کنید</div>
-      <div class="grid" id="os-options">
-        <!-- buttons injected by JS -->
-      </div>
-      <div class="muted">Android / iOS / Windows / macOS</div>
-    </section>
+<h1 id="title">راهنمای اتصال سرویس‌های M-VPN</h1>
 
-    <!-- Step 2: Select App -->
-    <section id="step-app" class="card hidden">
-      <div style="font-weight:700;margin-bottom:8px">۲. برنامه موردنظر را انتخاب کنید</div>
-      <div class="grid" id="app-options"></div>
-      <div class="actions">
-        <button class="btn ghost" id="back-to-os">بازگشت</button>
-      </div>
-    </section>
-
-    <!-- Step 3: Tutorial -->
-    <section id="step-tutorial" class="card hidden">
-      <div style="display:flex;justify-content:space-between;align-items:flex-start">
-        <div>
-          <div style="font-weight:800" id="tutorial-title">عنوان آموزش</div>
-          <div class="small" id="tutorial-sub">توضیح کوتاه</div>
-        </div>
-        <div style="text-align:left">
-          <button class="btn ghost" id="restart">شروع مجدد</button>
-        </div>
-      </div>
-
-      <div class="steps" id="tutorial-steps" style="margin-top:12px"></div>
-
-      <div id="tutorial-video" class="video hidden">
-        <video controls style="width:100%" id="video-player">
-          <source id="video-src" src="" />
-          مرورگر شما امکان پخش ویدیو را ندارد.
-        </video>
-      </div>
-
-      <div class="actions">
-        <button class="btn ghost" id="open-bot">بازگشت به ربات</button>
-        <button class="btn primary" id="buy-sub">دریافت اشتراک</button>
-      </div>
-      <div class="muted" style="margin-top:8px">توجه: این آموزش‌ها پیش‌فرض هستند؛ می‌توانید متن‌ها را در فایل JSON داخل اپ ویرایش کنید.</div>
-    </section>
-
-    <footer>نسخه آزمایشی • طراحی شده برای باز شدن داخل تلگرام</footer>
+<div class="container" id="app">
+  <div id="step1">
+    <p>سیستم عامل خود را انتخاب کنید:</p>
+    <button onclick="selectOS('Android')">Android</button>
+    <button onclick="selectOS('iOS')">iOS</button>
+    <button onclick="selectOS('Windows')">Windows</button>
+    <button onclick="selectOS('macOS')">macOS</button>
   </div>
 
+  <div id="step2" style="display:none;">
+    <p>برنامه مورد نظر را انتخاب کنید:</p>
+    <div id="apps"></div>
+    <button onclick="goBack(1)">بازگشت</button>
+  </div>
+
+  <div id="step3" style="display:none;">
+    <div id="tutorial"></div>
+    <button onclick="goBack(2)">بازگشت</button>
+  </div>
+</div>
+
+<footer>
+  طراحی شده توسط تیم <a href="https://t.me/nv444" target="_blank">M-VPN</a>
+</footer>
+
 <script>
-/* Data: tutorials (created based on ورودی شما)
-   Assumptions:
-   - "shodaowrocket" interpreted as "Shadowrocket"
-   - For Windows, user wrote "V2rayNG" but commonly ویندوز از V2rayN استفاده می‌شود;
-     در این نسخه نام را همانطور که گفتید قرار دادیم ولی قدم‌ها برای V2rayN هم مناسب‌اند.
-*/
+const appsByOS = {
+  Android: ["v2rayNg", "v2box"],
+  iOS: ["v2box", "Shadowrocket", "Streisand"],
+  Windows: ["V2rayN"],
+  macOS: ["Streisand"]
+};
+
 const tutorials = {
-  "Android": {
-    "v2rayNg": {
-      title: "نصب و راه‌اندازی v2rayNG در Android",
-      sub: "راهنمای سریع برای وارد کردن کانفیگ و اتصال",
-      steps: [
-        "اپ v2rayNG را از Google Play یا فایل APK معتبر نصب کنید.",
-        "از ربات، کانفیگ اختصاصی خود را دریافت کنید (فایل یا لینک).",
-        "در v2rayNG روی + کلیک و 'Import config' را انتخاب کنید و فایل یا لینک را وارد کنید.",
-        "کانفیگ وارد شده را انتخاب و روی دکمه اتصال (Start) بزنید.",
-        "در صورت نیاز، دسترسی VPN را تایید کنید."
-      ],
-      video: ""
-    },
-    "v2box": {
-      title: "نصب و راه‌اندازی v2box در Android",
-      sub: "نحوه وارد کردن کانفیگ و اتصال با v2box",
-      steps: [
-        "اپ v2box را از مارکت یا فایل APK نصب کنید.",
-        "از ربات لینک یا فایل کانفیگ را دریافت کنید.",
-        "در v2box گزینه import config را پیدا کرده و کانفیگ را وارد کنید.",
-        "کانفیگ را فعال و اتصال را تست کنید."
-      ],
-      video: ""
-    }
+  Android: {
+    v2rayNg: `
+      <p>۱- منوی همبرگری ☰ بالا را بزنید.</p>
+      <!-- image1 -->
+      <p>۲- از منوی همبرگری گزینه Setting را انتخاب کنید.</p>
+      <!-- image2 -->
+      <p>۳- گزینه تنظیمات پیشرفته را بزنید و گزینه Allow insecure را فعال کنید.</p>
+      <!-- image3 -->
+      <p>۴- به صفحه اصلی برگردید، مثبت بالا را بزنید و گزینه وارد کردن از کلیپ بورد را انتخاب کنید.</p>
+      <!-- image4 -->
+    `,
+    v2box: `
+      <p>۱- ستینگ برنامه را باز کنید.</p>
+      <!-- image1 -->
+      <p>۲- گزینه Allow insecure را روشن کنید.</p>
+      <!-- image2 -->
+      <p>۳- از بخش Configs مثبت بالا را بزنید و گزینه Import V2Ray URI from Clipboard را انتخاب کنید.</p>
+      <!-- image3 -->
+      <p>۴- روی اسم کانفیگ بزنید و از پایین صفحه Slide to connect را به سمت راست بکشید.</p>
+      <!-- image4 -->
+    `
   },
-  "iOS": {
-    "v2box": {
-      title: "نصب v2box در iOS",
-      sub: "راهنمای نصب و وارد کردن کانفیگ در iOS",
-      steps: [
-        "v2box را از App Store یا از منبع معتبر نصب کنید.",
-        "کانفیگ را از ربات دریافت و مطابق دستور داخل اپ وارد کنید.",
-        "در صورت نیاز، به تنظیمات VPN در iOS رفته و پروفایل را فعال کنید."
-      ],
-      video: ""
-    },
-    "Shadowrocket": {
-      title: "نصب Shadowrocket در iOS",
-      sub: "Shadowrocket برای iOS — وارد کردن کانفیگ و فعال‌سازی",
-      steps: [
-        "اپ Shadowrocket را از App Store (در دسترس بودن بستگی به منطقه دارد) نصب کنید.",
-        "کانفیگ را از ربات دریافت کنید (فرمت معمول با URL یا فایل).",
-        "در Shadowrocket روی + و سپس Import/Download از URL استفاده کنید.",
-        "کانفیگ را فعال کنید و از طریق سوییچ اتصال را برقرار کنید."
-      ],
-      video: ""
-    },
-    "streisand": {
-      title: "استفاده از Streisand در iOS",
-      sub: "Streisand معمولاً سمت سرور است؛ نحوه اتصال کلاینت در iOS",
-      steps: [
-        "اگر سرور Streisand دارید، فایل پیکربندی (مثل OpenVPN یا WireGuard) را از ربات دریافت کنید.",
-        "اپ مربوط (مثلاً OpenVPN یا WireGuard) را نصب کنید و کانفیگ را وارد کنید.",
-        "پروفایل را import کنید و سپس اتصال را برقرار کنید."
-      ],
-      video: ""
-    }
+  iOS: {
+    v2box: `
+      <p>۱- ستینگ برنامه را باز کنید.</p>
+      <!-- image1 -->
+      <p>۲- گزینه Allow insecure را روشن کنید.</p>
+      <!-- image2 -->
+      <p>۳- از بخش Configs مثبت بالا را بزنید و گزینه Import V2Ray URI from Clipboard را انتخاب کنید.</p>
+      <!-- image3 -->
+      <p>۴- روی اسم کانفیگ بزنید و از پایین صفحه Slide to connect را به سمت راست بکشید.</p>
+      <!-- image4 -->
+    `,
+    Shadowrocket: `
+      <p>۱- روی منو Config بزنید و + بالا را بزنید، کانفیگ خود را Paste کرده و Download را بزنید.</p>
+      <!-- image1 -->
+      <p>۲- به منوی Home برگردید، روی اسم کانفیگ لمس کنید و دکمه اتصال را بزنید.</p>
+      <!-- image2 -->
+      <p>۳- اگر وصل نشد، روی علامت تعجب بزنید، گزینه TLS را انتخاب و Allow insecure را روشن کنید.</p>
+      <!-- image3 -->
+      <p>سپس یک مرحله به عقب برگردید، Save را بزنید و متصل شوید.</p>
+      <!-- image4 -->
+    `,
+    Streisand: `
+      <p>۱- ستینگ برنامه را باز کنید.</p>
+      <!-- image1 -->
+      <p>۲- از بالا گزینه سوم Subscription را انتخاب کنید.</p>
+      <!-- image2 -->
+      <p>۳- گزینه‌های Update on open و Allow insecure را روشن کنید.</p>
+      <!-- image3 -->
+      <p>۴- از تب Home مثبت بالا را بزنید و گزینه Import from clipboard را انتخاب کنید.</p>
+      <!-- image4 -->
+      <p>۵- روی اسم کانفیگ لمس کنید و دکمه اتصال را بزنید.</p>
+      <!-- image5 -->
+    `
   },
-  "Windows": {
-    "V2rayNG": {
-      title: "نصب و راه‌اندازی V2ray برای ویندوز",
-      sub: "راهنمای نصب کلاینت ویندوز (V2rayN / معادل‌ها)",
-      steps: [
-        "نرم‌افزار V2rayN (یا نسخه‌ای که استفاده می‌کنید) را دانلود و از حالت فشرده خارج کنید.",
-        "فایل کانفیگ یا JSON که از ربات دریافت می‌کنید را در قسمت import برنامه وارد کنید.",
-        "پروفایل مورد نظر را انتخاب و دکمه Start/Connect را بزنید.",
-        "در صورت نیاز فایروال را مجوز دهید."
-      ],
-      video: ""
-    }
+  Windows: {
+    V2rayN: `
+      <p>این بخش نیاز به آموزش تصویری دارد. لطفاً ویدیوی زیر را مشاهده کنید.</p>
+      <!-- video placeholder -->
+      <video controls src="YOUR_VIDEO_LINK_HERE" class="step-img"></video>
+    `
   },
-  "macOS": {
-    "streisand": {
-      title: "اتصال به سرور Streisand در macOS",
-      sub: "وارد کردن کانفیگ و اتصال در macOS",
-      steps: [
-        "اگر کانفیگ WireGuard یا OpenVPN دارید، اپ مربوط را روی macOS نصب کنید.",
-        "فایل پیکربندی را از ربات دانلود کرده و در اپ وارد کنید.",
-        "پروفایل را فعال و اتصال را بررسی کنید."
-      ],
-      video: ""
-    }
+  macOS: {
+    Streisand: `
+      <p>۱- ستینگ برنامه را باز کنید.</p>
+      <!-- image1 -->
+      <p>۲- از بالا گزینه سوم Subscription را انتخاب کنید.</p>
+      <!-- image2 -->
+      <p>۳- گزینه‌های Update on open و Allow insecure را روشن کنید.</p>
+      <!-- image3 -->
+      <p>۴- از تب Home مثبت بالا را بزنید و گزینه Import from clipboard را انتخاب کنید.</p>
+      <!-- image4 -->
+      <p>۵- روی اسم کانفیگ لمس کنید و دکمه اتصال را بزنید.</p>
+      <!-- image5 -->
+    `
   }
 };
 
-// UI logic
-const osList = Object.keys(tutorials);
-const osOptionsEl = document.getElementById('os-options');
-const appOptionsEl = document.getElementById('app-options');
-const stepOs = document.getElementById('step-os');
-const stepApp = document.getElementById('step-app');
-const stepTutorial = document.getElementById('step-tutorial');
-const tutorialTitle = document.getElementById('tutorial-title');
-const tutorialSub = document.getElementById('tutorial-sub');
-const tutorialSteps = document.getElementById('tutorial-steps');
-const tutorialVideo = document.getElementById('tutorial-video');
-const videoSrc = document.getElementById('video-src');
-const backToOsBtn = document.getElementById('back-to-os');
-const restartBtn = document.getElementById('restart');
-const openBotBtn = document.getElementById('open-bot');
-const buyBtn = document.getElementById('buy-sub');
-const telegramStatus = document.getElementById('telegram-status');
+let currentOS = "";
 
-let chosenOS = null;
-let chosenApp = null;
-
-// Render OS options
-osList.forEach(os => {
-  const btn = document.createElement('button');
-  btn.className = 'option';
-  btn.textContent = os;
-  btn.onclick = () => {
-    chosenOS = os;
-    showAppsForOS(os);
-    stepOs.classList.add('hidden');
-    stepApp.classList.remove('hidden');
-  };
-  osOptionsEl.appendChild(btn);
-});
-
-function showAppsForOS(os) {
-  appOptionsEl.innerHTML = '';
-  const apps = Object.keys(tutorials[os] || {});
-  if(apps.length === 0){
-    appOptionsEl.innerHTML = '<div class="muted">برای این سیستم‌عامل فعلاً برنامه‌ای ثبت نشده است.</div>';
-    return;
-  }
-  apps.forEach(app => {
+function selectOS(os) {
+  currentOS = os;
+  document.getElementById('step1').style.display = 'none';
+  document.getElementById('step2').style.display = 'block';
+  const appsDiv = document.getElementById('apps');
+  appsDiv.innerHTML = '';
+  appsByOS[os].forEach(app => {
     const btn = document.createElement('button');
-    btn.className = 'option';
-    btn.textContent = app;
-    btn.onclick = () => {
-      chosenApp = app;
-      showTutorial(os, app);
-      stepApp.classList.add('hidden');
-      stepTutorial.classList.remove('hidden');
-    };
-    appOptionsEl.appendChild(btn);
+    btn.innerText = app;
+    btn.onclick = () => selectApp(app);
+    appsDiv.appendChild(btn);
   });
 }
 
-function showTutorial(os, app) {
-  const t = (tutorials[os] && tutorials[os][app]) ? tutorials[os][app] : null;
-  if(!t){
-    tutorialTitle.textContent = 'آموزش در دسترس نیست';
-    tutorialSub.textContent = '';
-    tutorialSteps.innerHTML = '<div class="muted">هیچ آموزشی برای این ترکیب ثبت نشده است.</div>';
-    return;
-  }
-  tutorialTitle.textContent = t.title;
-  tutorialSub.textContent = t.sub || '';
-  tutorialSteps.innerHTML = '';
-  t.steps.forEach(s => {
-    const el = document.createElement('div');
-    el.className = 'step';
-    el.textContent = s;
-    tutorialSteps.appendChild(el);
-  });
-  if(t.video && t.video.length>0){
-    tutorialVideo.classList.remove('hidden');
-    videoSrc.src = t.video;
-    // reload video
-    const vp = document.getElementById('video-player');
-    vp.load();
-  } else {
-    tutorialVideo.classList.add('hidden');
-  }
+function selectApp(app) {
+  document.getElementById('step2').style.display = 'none';
+  document.getElementById('step3').style.display = 'block';
+  document.getElementById('tutorial').innerHTML = tutorials[currentOS][app];
 }
 
-// Buttons
-backToOsBtn.onclick = () => {
-  stepApp.classList.add('hidden');
-  stepOs.classList.remove('hidden');
-};
-restartBtn.onclick = () => {
-  stepTutorial.classList.add('hidden');
-  stepOs.classList.remove('hidden');
-  chosenOS = chosenApp = null;
-};
-openBotBtn.onclick = () => {
-  // Try to open telegram bot / send data via WebApp
-  if(window.Telegram && window.Telegram.WebApp){
-    try{
-      window.Telegram.WebApp.sendData(JSON.stringify({action:'tutorial_viewed', os:chosenOS, app:chosenApp}));
-      window.Telegram.WebApp.close();
-    }catch(e){
-      alert('ارتباط با WebApp برقرار نشد: ' + e.message);
-    }
-  } else {
-    alert('این اپ در حالت وب اجرا می‌شود. برای بازگشت به ربات از دکمهٔ تلگرام استفاده کنید.');
+function goBack(step) {
+  if (step === 1) {
+    document.getElementById('step1').style.display = 'block';
+    document.getElementById('step2').style.display = 'none';
+  } else if (step === 2) {
+    document.getElementById('step2').style.display = 'block';
+    document.getElementById('step3').style.display = 'none';
   }
-};
-buyBtn.onclick = () => {
-  if(window.Telegram && window.Telegram.WebApp){
-    // send an intent to bot to initiate purchase flow
-    try{
-      window.Telegram.WebApp.sendData(JSON.stringify({action:'buy', os:chosenOS, app:chosenApp}));
-      window.Telegram.WebApp.close();
-    }catch(e){
-      alert('ارسال اطلاعات به ربات موفق نبود: ' + e.message);
-    }
-  } else {
-    alert('برای خرید، لطفاً به ربات بازگردید و گزینه خرید را انتخاب کنید.');
-  }
-};
-
-// Detect Telegram WebApp presence
-if(window.Telegram && window.Telegram.WebApp){
-  telegramStatus.innerHTML = '<div style="font-size:12px;color:var(--muted)">درون تلگرام باز شده</div>';
-  try {
-    window.Telegram.WebApp.ready();
-  } catch(e){}
-} else {
-  telegramStatus.innerHTML = '<div style="font-size:12px;color:var(--muted)">در مرورگر معمولی اجرا می‌شود</div>';
 }
-
-// Small JS helper: if user passed initial params via URL, auto-select
-(function(){
-  const url = new URL(location.href);
-  const presetOS = url.searchParams.get('os');
-  const presetApp = url.searchParams.get('app');
-  if(presetOS && tutorials[presetOS]){
-    // simulate click
-    chosenOS = presetOS;
-    showAppsForOS(presetOS);
-    stepOs.classList.add('hidden');
-    stepApp.classList.remove('hidden');
-    if(presetApp && tutorials[presetOS][presetApp]){
-      chosenApp = presetApp;
-      showTutorial(presetOS, presetApp);
-      stepApp.classList.add('hidden');
-      stepTutorial.classList.remove('hidden');
-    }
-  }
-})();
 </script>
+
 </body>
 </html>
