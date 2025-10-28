@@ -11,7 +11,7 @@
 
 :root{
   --accent1:#6b5cff;   /* بنفش (دانلود) */
-  --accent2:#5ac8ff;   /* فیروزه‌ای (آموزش ویدیویی) */
+  --accent2:#5ac8ff;   /* فیروزه‌ای (آموزش ویدیویی/CTA) */
   --card-bg:linear-gradient(135deg,var(--accent1),var(--accent2));
   --white:#fff;
   --text:#222;
@@ -33,6 +33,17 @@ body{
 .title .word{display:inline-block;background:linear-gradient(90deg,var(--accent1),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
 .card{background:#fff;border-radius:14px;padding:18px;box-shadow:0 8px 28px rgba(20,20,60,0.06);margin-bottom:18px;}
 .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;}
+
+/* CTA بالای صفحه */
+.top-cta{ display:flex; justify-content:center; margin:6px 0 14px 0; }
+.top-cta a{
+  display:flex; align-items:center; justify-content:center;
+  background: linear-gradient(135deg, var(--accent2), #00bfff);
+  color:#fff; border-radius:24px; padding:10px 18px; font-size:14px; text-decoration:none; gap:8px;
+  transition:transform .18s ease, box-shadow .18s ease;
+}
+.top-cta a:hover{ transform: translateY(-2px) scale(1.02); box-shadow:0 8px 20px rgba(20,20,60,.12); }
+.top-cta i{ font-size:14px; }
 
 /* انیمیشن‌های عمومی */
 @keyframes fadeUp { from{opacity:0; transform:translateY(10px)} to{opacity:1; transform:translateY(0)} }
@@ -101,7 +112,7 @@ body{
 .title .word.w1{animation-delay:0ms;}
 .title .word.w2{animation-delay:220ms;}
 .title .word.w3{animation-delay:440ms;}
-.title .word.w4{animation-delay:660ms;}
+title .word.w4{animation-delay:660ms;}
 .title .word{
   background:linear-gradient(90deg,var(--accent1),var(--accent2));
   -webkit-background-clip:text;
@@ -118,6 +129,14 @@ body{
     <span class="word w2">اتصال</span>&nbsp;
     <span class="word w3">سرویس‌های</span>&nbsp;
     <span class="word w4">M‑VPN</span>
+  </div>
+
+  <!-- دکمه عضویت در کانال (فیروزه‌ای) -->
+  <div class="top-cta">
+    <a href="https://t.me/helpnv443" target="_blank" rel="noopener">
+      <i class="fa-brands fa-telegram"></i>
+      عضویت در کانال
+    </a>
   </div>
 
   <div id="step-os" class="card">
@@ -148,7 +167,7 @@ body{
 </div>
 
 <script>
-/* لینک‌های لوگو — اینجا قرار گرفته‌اند */
+/* ————— بخش لینک آیکون‌ها (قابل تغییر توسط شما) ————— */
 const osLogos = {
   Android: "https://cdn.jsdelivr.net/gh/logi443/miniapp/Android.svg",
   iOS: "https://cdn.jsdelivr.net/gh/logi443/miniapp/AppleFilled.svg",
@@ -156,30 +175,54 @@ const osLogos = {
   macOS: "https://cdn.jsdelivr.net/gh/logi443/miniapp/Macosx.svg"
 };
 
-/* شامل Npv Tunnel */
 const appLogos = {
   v2rayNg: "https://cdn.jsdelivr.net/gh/logi443/miniapp/a.png",
   v2box: "https://cdn.jsdelivr.net/gh/logi443/miniapp/unnamed.png",
   Shadowrocket: "https://cdn.jsdelivr.net/gh/logi443/miniapp/gcxQW6z3_400x400.jpg",
   Streisand: "https://cdn.jsdelivr.net/gh/logi443/miniapp/9250996.64.webp",
-  V2rayN: "https://cdn.jsdelivr.net/gh/logi443/miniapp/a.png",
+  V2rayN: "https://cdn.jsdelivr.net/gh/logi443/miniapp/1703901992-v2rayN-icon.png",
   "Npv Tunnel": "https://cdn.jsdelivr.net/gh/logi443/miniapp/60x60bb.jpg"
 };
+/* ———————————————————————————————————————— */
+
 /* ویدئوی آموزشی — خالی باشد دکمه نشان داده نمی‌شود */
 const videoLinks={
   Android:{v2rayNg:"https://t.me/helpnv443/46",v2box:"https://t.me/helpnv443/44","Npv Tunnel":"https://t.me/helpnv443/62"},
   iOS:{v2box:"https://t.me/helpnv443/42",Shadowrocket:"",Streisand:"https://t.me/helpnv443/45","Npv Tunnel":"https://t.me/helpnv443/62"},
   Windows:{V2rayN:"https://t.me/helpnv443/63"},
-  macOS:{Streisand:"",Shadowrocket:""}
+  macOS:{Streisand:"",Shadowrocket:"", v2box:""}
 };
 
-/* برنامه‌ها برای هر سیستم‌عامل */
-const appsByOS={Android:["v2rayNg","v2box","Npv Tunnel"],iOS:["v2box","Shadowrocket","Streisand","Npv Tunnel"],Windows:["V2rayN"],macOS:["Streisand","Shadowrocket"]};
+/* برنامه‌ها برای هر سیستم‌عامل — اضافه شد: v2box برای macOS */
+const appsByOS={
+  Android:["v2rayNg","v2box","Npv Tunnel"],
+  iOS:["v2box","Shadowrocket","Streisand","Npv Tunnel"],
+  Windows:["V2rayN"],
+  macOS:["Streisand","Shadowrocket","V2box"]
+};
 
 /* لینک دانلود‌ها */
-const downloadLinks={Android:{v2rayNg:"https://logi443.github.io/v2ray",v2box:"https://play.google.com/store/apps/details?id=dev.hexasoftware.v2box","Npv Tunnel":"https://play.google.com/store/apps/details?id=com.napsternetlabs.napsternetv"},iOS:{v2box:"https://apps.apple.com/app/id6446814690",Shadowrocket:"https://apps.apple.com/app/id932747118",Streisand:"https://apps.apple.com/app/id6450534064","Npv Tunnel":"https://apps.apple.com/app/id1629465476"},Windows:{V2rayN:"https://github.com/2dust/v2rayN/releases/download/7.15.6/v2rayN-windows-64-SelfContained.zip"},macOS:{Streisand:"https://apps.apple.com/us/app/streisand/id6450534064",Shadowrocket:"https://apps.apple.com/app/id932747118"}};
+const downloadLinks={
+  Android:{
+    v2rayNg:"https://logi443.github.io/v2ray",
+    v2box:"https://play.google.com/store/apps/details?id=dev.hexasoftware.v2box",
+    "Npv Tunnel":"https://play.google.com/store/apps/details?id=com.napsternetlabs.napsternetv"
+  },
+  iOS:{
+    v2box:"https://apps.apple.com/app/id6446814690",
+    Shadowrocket:"https://apps.apple.com/app/id932747118",
+    Streisand:"https://apps.apple.com/app/id6450534064",
+    "Npv Tunnel":"https://apps.apple.com/app/id1629465476"
+  },
+  Windows:{ V2rayN:"https://github.com/2dust/v2rayN/releases/download/7.15.6/v2rayN-windows-64-SelfContained.zip" },
+  macOS:{
+    Streisand:"https://apps.apple.com/us/app/streisand/id6450534064",
+    Shadowrocket:"https://apps.apple.com/app/id932747118",
+    v2box:"https://apps.apple.com/us/app/v2box-v2ray-client/id6446814690" 
+  }
+};
 
-/* آموزش‌ها */
+/* آموزش‌ها — macOS.v2box همان متن iOS.v2box است */
 const tutorials={
   Android:{
     v2rayNg:["منوی همبرگری ☰ بالا را بزنید.","از منوی همبرگری گزینه Setting را انتخاب کنید.","گزینه تنظیمات پیشرفته را بزنید و گزینه Allow insecure را فعال کنید.","به صفحه اصلی برگردید، مثبت بالا را بزنید و گزینه وارد کردن از کلیپ‌بورد را انتخاب کنید."],
@@ -205,13 +248,13 @@ const tutorials={
   Windows:{ V2rayN:["این بخش نیاز به آموزش تصویری دارد. لطفاً ویدیوی زیر را مشاهده کنید."] },
   macOS:{
     Streisand:["ستینگ برنامه را باز کنید.","از بالا گزینه سوم Subscription را انتخاب کنید.","گزینه‌های Update on open و Allow insecure را روشن کنید.","از تب Home مثبت بالا را بزنید و گزینه Import from clipboard را انتخاب کنید.","روی اسم کانفیگ لمس کنید و دکمه اتصال را بزنید."],
-    Shadowrocket:["روی منو Config بزنید و + بالا را بزنید، کانفیگ خود را Paste کرده و Download را بزنید.","به منوی Home برگردید، روی اسم کانفیگ لمس کنید و دکمه اتصال را بزنید.","اگر وصل نشد، روی علامت تعجب بزنید، گزینه TLS را انتخاب و Allow insecure را روشن کنید. سپس یک مرحله به عقب برگردید، Save را بزنید و متصل شوید."]
+    Shadowrocket:["روی منو Config بزنید و + بالا را بزنید، کانفیگ خود را Paste کرده و Download را بزنید.","به منوی Home برگردید، روی اسم کانفیگ لمس کنید و دکمه اتصال را بزنید.","اگر وصل نشد، روی علامت تعجب بزنید، گزینه TLS را انتخاب و Allow insecure را روشن کنید. سپس یک مرحله به عقب برگردید، Save را بزنید و متصل شوید."],
+    v2box:["ستینگ برنامه را باز کنید.","گزینه Allow insecure را روشن کنید.","از بخش Configs مثبت بالا را بزنید و گزینه Import V2Ray URI from Clipboard را انتخاب کنید.","روی اسم کانفیگ بزنید و از پایین صفحه Slide to connect را به سمت راست بکشید."]
   }
 };
 
 /* --- Helpers for staggered animations --- */
 function animateStagger(container){
-  // apply increasing delay to each child with .stagger-item
   const items = container.querySelectorAll('.stagger-item');
   items.forEach((el, i)=>{
     el.style.animationDelay = (i * 150) + 'ms';
@@ -261,9 +304,7 @@ function renderTutorial(os,app){
 
   const wrap=document.getElementById('tutorial-area'); wrap.innerHTML='';
 
-  // Steps appear sequentially (one-by-one)
   const steps=(tutorials[os]&&tutorials[os][app])?tutorials[os][app]:[];
-  let delay=0;
   steps.forEach((t,i)=>{
     const c=document.createElement('div'); c.className='step-card step-appear';
     c.style.animationDelay = (i * 160) + 'ms';
@@ -271,10 +312,9 @@ function renderTutorial(os,app){
     wrap.appendChild(c);
   });
 
-  // then show actions after steps
   const actions=document.getElementById('actions'); actions.innerHTML='';
   actions.classList.remove('actions-appear');
-  void actions.offsetWidth; // reflow
+  void actions.offsetWidth;
   actions.classList.add('actions-appear');
 
   const vlink=(videoLinks[os]&&videoLinks[os][app])?videoLinks[os][app]:"";
@@ -298,7 +338,6 @@ function goBack(step){
   if(step===1){
     document.getElementById('step-os').style.display='block';
     document.getElementById('step-app').style.display='none';
-    // re-run stagger for OS grid (already has stagger-item)
     animateStagger(document.getElementById('os-grid'));
   }else if(step===2){
     document.getElementById('step-app').style.display='block';
