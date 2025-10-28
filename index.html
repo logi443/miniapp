@@ -197,6 +197,25 @@ const tutorials = {
 
 let currentOS = null;
 
+function buildIcon(app){
+  const urls = appIconSources[app] || [];
+  const img = document.createElement('img');
+  img.width = 24; img.height = 24; img.style.borderRadius = '6px';
+  img.referrerPolicy = 'no-referrer';
+  let i = 0;
+  function tryNext(){
+    if(i < urls.length){
+      img.src = urls[i++];
+    } else {
+      // fallback به یک حرف اول نام اپ
+      img.remove();
+    }
+  }
+  img.onerror = tryNext;
+  tryNext();
+  return img;
+}
+
 function selectOS(os){
   currentOS = os;
   document.getElementById('step-os').style.display = 'none';
@@ -207,8 +226,11 @@ function selectOS(os){
   apps.forEach(app=>{
     const b = document.createElement('button');
     b.className = 'btn';
-    const icon = appIcons[app] ? `<img src='${appIcons[app]}' alt='${app} icon'>` : '';
-    b.innerHTML = `${icon}${app}`;
+    const iconEl = buildIcon(app);
+    if(iconEl){ b.appendChild(iconEl); }
+    const label = document.createElement('span');
+    label.textContent = app;
+    b.appendChild(label);
     b.onclick = ()=> selectApp(app);
     appsDiv.appendChild(b);
   });
