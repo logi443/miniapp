@@ -4,16 +4,13 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>M-VPN — راهنمای اتصال</title>
-
-<!-- IranSans (CDN) -->
 <link rel="preload" href="https://cdn.jsdelivr.net/gh/rastikerdar/iransans-font@v1.0.5/dist/font-face.css" as="style">
 <style>
 @import url('https://cdn.jsdelivr.net/gh/rastikerdar/iransans-font@v1.0.5/dist/font-face.css');
 
-/* Reset & base */
 :root{
-  --accent1: #6b5cff; /* بنفش مایل به آبی (تیره) */
-  --accent2: #5ac8ff; /* آبی روشن */
+  --accent1: #6b5cff; 
+  --accent2: #5ac8ff; 
   --card-bg: linear-gradient(135deg, var(--accent1), var(--accent2));
   --white: #ffffff;
   --text: #222;
@@ -26,26 +23,18 @@ body{
   font-family: "IranSans", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
   background:#fff;
   color:var(--text);
-  -webkit-font-smoothing:antialiased;
-  -moz-osx-font-smoothing:grayscale;
   display:flex;
   align-items:flex-start;
   justify-content:center;
   padding:28px 16px;
 }
 
-/* layout */
-.app{
-  width:100%;
-  max-width:520px;
-}
+.app{ max-width:520px; width:100%; }
 
-/* Title with fade-in per word */
 .title{
   text-align:center;
   margin:18px 0;
   font-size:22px;
-  line-height:1.2;
   font-weight:700;
 }
 .title .word{
@@ -58,7 +47,6 @@ body{
 .title .word.w2{ animation-delay: 220ms; }
 .title .word.w3{ animation-delay: 440ms; }
 .title .word.w4{ animation-delay: 660ms; }
-/* small subtle glow using gradient text */
 .title .word{
   background: linear-gradient(90deg, var(--accent1), var(--accent2));
   -webkit-background-clip:text;
@@ -68,7 +56,6 @@ body{
   to { opacity:1; transform:translateY(0); }
 }
 
-/* white card for main area */
 .card{
   background:#fff;
   border-radius:14px;
@@ -77,12 +64,12 @@ body{
   margin-bottom:18px;
 }
 
-/* OS selection */
 .grid{
   display:grid;
-  grid-template-columns:repeat(2,1fr);
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
   gap:12px;
 }
+
 .btn {
   display:inline-block;
   width:100%;
@@ -97,15 +84,8 @@ body{
 }
 .btn:active{ transform:translateY(1px) }
 
-/* container for steps (colored) */
-.tutorial-wrap{
-  margin-top:12px;
-  display:flex;
-  flex-direction:column;
-  gap:12px;
-}
+.tutorial-wrap{ margin-top:12px; display:flex; flex-direction:column; gap:12px; }
 
-/* step card (colored gradient) */
 .step-card{
   display:flex;
   gap:12px;
@@ -117,7 +97,6 @@ body{
   box-shadow: 0 8px 20px rgba(107,92,255,0.12);
 }
 
-/* step number circle (white) */
 .step-num{
   min-width:44px;
   height:44px;
@@ -133,101 +112,55 @@ body{
   box-shadow: 0 4px 10px rgba(0,0,0,0.08);
 }
 
-/* step text area */
-.step-body{
-  flex:1;
-}
-.step-body p{
-  margin:6px 0;
-  line-height:1.5;
-  font-size:15px;
-}
+.step-body{ flex:1; }
+.step-body p{ margin:6px 0; line-height:1.5; font-size:15px; }
+.step-body img.step-img{ display:block; width:100%; border-radius:8px; margin:8px 0 0 0; box-shadow: 0 8px 20px rgba(10,10,30,0.08); }
 
-/* image placeholder styling */
-.step-img{
-  display:block;
-  width:100%;
-  border-radius:8px;
-  margin:8px 0 0 0;
-  box-shadow: 0 8px 20px rgba(10,10,30,0.08);
-}
+.back{ margin-top:12px; display:inline-block; padding:10px 14px; border-radius:10px; border:1px solid var(--accent1); background:#fff; color:var(--accent1); font-weight:700; cursor:pointer; }
 
-/* back button */
-.back{
-  margin-top:12px;
-  display:inline-block;
-  padding:10px 14px;
-  border-radius:10px;
-  border:1px solid var(--accent1);
-  background:#fff;
-  color:var(--accent1);
-  font-weight:700;
-  cursor:pointer;
-}
-
-/* footer */
-.footer{
-  margin-top:10px;
-  text-align:center;
-  color:var(--muted);
-  font-size:13px;
-}
+.footer{ margin-top:10px; text-align:center; color:var(--muted); font-size:13px; }
 .footer a{ color:var(--accent1); text-decoration:underline; font-weight:700; }
 
-/* responsive */
-@media (max-width:420px){
-  .grid{grid-template-columns:1fr}
-}
+.step-icon{ width:24px; height:24px; margin-left:6px; vertical-align:middle; }
+
+@media (max-width:420px){ .grid{grid-template-columns:1fr} }
 </style>
 </head>
 <body>
-  <div class="app">
-    <!-- Title -->
-    <div class="title" aria-hidden="true">
-      <!-- split into words for staggered fade -->
-      <span class="word w1">راهنمای</span>&nbsp;
-      <span class="word w2">اتصال</span>&nbsp;
-      <span class="word w3">سرویس‌های</span>&nbsp;
-      <span class="word w4">M-VPN</span>
-    </div>
+<div class="app">
+<div class="title" aria-hidden="true">
+  <span class="word w1">راهنمای</span>&nbsp;
+  <span class="word w2">اتصال</span>&nbsp;
+  <span class="word w3">سرویس‌های</span>&nbsp;
+  <span class="word w4">M-VPN</span>
+</div>
 
-    <!-- Step 1: Select OS -->
-    <div id="step-os" class="card">
-      <div style="font-weight:700;margin-bottom:8px">۱ — سیستم‌عامل خود را انتخاب کنید</div>
-      <div class="grid">
-        <button class="btn" onclick="selectOS('Android')">Android</button>
-        <button class="btn" onclick="selectOS('iOS')">iOS</button>
-        <button class="btn" onclick="selectOS('Windows')">Windows</button>
-        <button class="btn" onclick="selectOS('macOS')">macOS</button>
-      </div>
-    </div>
-
-    <!-- Step 2: Select App -->
-    <div id="step-app" class="card" style="display:none">
-      <div style="font-weight:700;margin-bottom:8px">۲ — برنامه‌ خود را انتخاب کنید</div>
-      <div id="apps" class="grid"></div>
-      <button class="back" onclick="goBack(1)">بازگشت</button>
-    </div>
-
-    <!-- Step 3: Tutorial -->
-    <div id="step-tutorial" class="card" style="display:none">
-      <div style="font-weight:700;margin-bottom:8px">۳ — آموزش گام‌به‌گام</div>
-      <div id="tutorial-area" class="tutorial-wrap">
-        <!-- steps inserted here -->
-      </div>
-
-      <button class="back" style="margin-top:12px" onclick="goBack(2)">بازگشت</button>
-    </div>
-
-    <div class="footer">طراحی شده توسط تیم <a href="https://t.me/nv443" target="_blank" rel="noopener">M-VPN</a></div>
+<div id="step-os" class="card">
+  <div style="font-weight:700;margin-bottom:8px">۱ — سیستم‌عامل خود را انتخاب کنید</div>
+  <div class="grid" id="os-grid">
+    <button class="btn" onclick="selectOS('Android')">Android</button>
+    <button class="btn" onclick="selectOS('iOS')">iOS</button>
+    <button class="btn" onclick="selectOS('Windows')">Windows</button>
+    <button class="btn" onclick="selectOS('macOS')">macOS</button>
   </div>
+</div>
+
+<div id="step-app" class="card" style="display:none">
+  <div style="font-weight:700;margin-bottom:8px">۲ — برنامه‌ خود را انتخاب کنید</div>
+  <div id="apps" class="grid"></div>
+  <button class="back" onclick="goBack(1)">بازگشت</button>
+</div>
+
+<div id="step-tutorial" class="card" style="display:none">
+  <div style="font-weight:700;margin-bottom:8px">۳ — آموزش گام‌به‌گام</div>
+  <div id="tutorial-area" class="tutorial-wrap"></div>
+  <button class="back" style="margin-top:12px" onclick="goBack(2)">بازگشت</button>
+</div>
+
+<div class="footer">طراحی شده توسط تیم <a href="https://t.me/nv444" target="_blank" rel="noopener">M-VPN</a></div>
+</div>
 
 <script>
-/* App data (user-provided content) */
-/* Note: where you see <!-- image1 --> etc in prior versions,
-   here we will insert <img src="..."> dynamically if you set image links.
-   To add images: modify the `assets` object below with URLs for target combos. */
-
 const appsByOS = {
   Android: ["v2rayNg","v2box"],
   iOS: ["v2box","Shadowrocket","Streisand"],
@@ -235,13 +168,22 @@ const appsByOS = {
   macOS: ["Streisand"]
 };
 
-/* Tutorials HTML — includes numbered step texts.
-   Each step is a string (plain HTML). Comments like <!-- image1 --> left intentionally;
-   to add image: set assets[os][app] = ['https://.../img1.jpg', '...'] and the renderer will insert them.
-*/
+const icons = {
+  Android: "https://img.icons8.com/color/48/000000/android-os.png",
+  iOS: "https://img.icons8.com/ios-filled/50/000000/ios-logo.png",
+  Windows: "https://img.icons8.com/color/48/000000/windows-10.png",
+  macOS: "https://img.icons8.com/ios-filled/50/000000/mac-os.png"
+};
+
+const downloadLinks = {
+  Android: "https://play.google.com/store/apps/details?id=com.example",
+  iOS: "https://apps.apple.com/app/id123456789",
+  Windows: "https://example.com/windows-download",
+  macOS: "https://example.com/macos-download"
+};
+
 const tutorials = {
-  Android: {
-    v2rayNg: [
+  Android: { v2rayNg: [
       "منوی همبرگری ☰ بالا را بزنید.",
       "از منوی همبرگری گزینه Setting را انتخاب کنید.",
       "گزینه تنظیمات پیشرفته را بزنید و گزینه Allow insecure را فعال کنید.",
@@ -254,19 +196,18 @@ const tutorials = {
       "روی اسم کانفیگ بزنید و از پایین صفحه Slide to connect را به سمت راست بکشید."
     ]
   },
-  iOS: {
-    v2box: [
+  iOS: { v2box:[
       "ستینگ برنامه را باز کنید.",
       "گزینه Allow insecure را روشن کنید.",
       "از بخش Configs مثبت بالا را بزنید و گزینه Import V2Ray URI from Clipboard را انتخاب کنید.",
       "روی اسم کانفیگ بزنید و از پایین صفحه Slide to connect را به سمت راست بکشید."
     ],
-    Shadowrocket: [
+    Shadowrocket:[
       "روی منو Config بزنید و + بالا را بزنید، کانفیگ خود را Paste کرده و Download را بزنید.",
       "به منوی Home برگردید، روی اسم کانفیگ لمس کنید و دکمه اتصال را بزنید.",
       "اگر وصل نشد، روی علامت تعجب بزنید، گزینه TLS را انتخاب و Allow insecure را روشن کنید. سپس یک مرحله به عقب برگردید، Save را بزنید و متصل شوید."
     ],
-    Streisand: [
+    Streisand:[
       "ستینگ برنامه را باز کنید.",
       "از بالا گزینه سوم Subscription را انتخاب کنید.",
       "گزینه‌های Update on open و Allow insecure را روشن کنید.",
@@ -274,14 +215,11 @@ const tutorials = {
       "روی اسم کانفیگ لمس کنید و دکمه اتصال را بزنید."
     ]
   },
-  Windows: {
-    V2rayN: [
-      "این بخش نیاز به آموزش تصویری دارد. لطفاً ویدیوی زیر را مشاهده کنید.",
-      /* video placeholder will be rendered if assets[Windows].V2rayN.video set */
+  Windows:{ V2rayN:[
+      "این بخش نیاز به آموزش تصویری دارد. لطفاً ویدیوی زیر را مشاهده کنید."
     ]
   },
-  macOS: {
-    Streisand: [
+  macOS:{ Streisand:[
       "ستینگ برنامه را باز کنید.",
       "از بالا گزینه سوم Subscription را انتخاب کنید.",
       "گزینه‌های Update on open و Allow insecure را روشن کنید.",
@@ -291,32 +229,6 @@ const tutorials = {
   }
 };
 
-/* Optional assets object: برای هر ترکیب می‌تونی آرایه‌ای از لینک عکس بذاری
-   مثلاً: assets.Android = { v2box: ['https://.../img1.jpg','https://.../img2.jpg', ... ] }
-   و برای ویندوز می‌تونی: assets.Windows = { V2rayN: { video: 'https://.../vid.mp4' } }
-   اگر خالی بمونه، فقط متن نمایش داده میشه.
-*/
-const assets = {
-  Android: {
-    v2rayNg: [], // ['https://.../v2rayng_step1.jpg', ...]
-    v2box: []
-  },
-  iOS: {
-    v2box: [],
-    Shadowrocket: [],
-    Streisand: [
-      "https://raw.githubusercontent.com/logi443/miniapp/main/IMG_4071.JPG",
-    ]
-  },
-  Windows: {
-    V2rayN: { video: '' } // 'https://.../v2rayn_tutorial.mp4'
-  },
-  macOS: {
-    Streisand: []
-  }
-};
-
-/* UI logic */
 let currentOS = null;
 
 function selectOS(os){
@@ -325,17 +237,14 @@ function selectOS(os){
   document.getElementById('step-app').style.display = 'block';
   const appsDiv = document.getElementById('apps');
   appsDiv.innerHTML = '';
-  (appsByOS[os]||[]).forEach(app=>{
+  const apps = appsByOS[os]||[];
+  apps.forEach(app=>{
     const b = document.createElement('button');
     b.className = 'btn';
-    b.innerText = app;
+    b.innerHTML = `<img src="${icons[os]}" class="step-icon"> ${app}`;
     b.onclick = ()=> selectApp(app);
     appsDiv.appendChild(b);
   });
-  // ensure grid layout
-  appsDiv.style.display = 'grid';
-  appsDiv.style.gridTemplateColumns = window.innerWidth < 420 ? '1fr' : '1fr 1fr';
-  appsDiv.style.gap = '12px';
 }
 
 function selectApp(app){
@@ -344,97 +253,49 @@ function selectApp(app){
   renderTutorial(currentOS, app);
 }
 
-/* render tutorial with numbered colored boxes and optional images/videos */
 function renderTutorial(os, app){
   const wrap = document.getElementById('tutorial-area');
-  wrap.innerHTML = ''; // clear
+  wrap.innerHTML = '';
   const steps = (tutorials[os] && tutorials[os][app]) || [];
-  const appAssets = (assets[os] && assets[os][app]) || [];
-
-  // For each textual step, create a colored card with number
-  steps.forEach((text, idx) => {
+  steps.forEach((text, idx)=>{
     const stepCard = document.createElement('div');
     stepCard.className = 'step-card';
-
     const num = document.createElement('div');
     num.className = 'step-num';
-    num.innerText = (idx+1);
-
+    num.innerText = idx+1;
     const body = document.createElement('div');
     body.className = 'step-body';
-    // set HTML safe (we control content)
     body.innerHTML = `<p>${text}</p>`;
-
-    // append optional image if exists at same index
-    const maybeImg = Array.isArray(appAssets) ? appAssets[idx] : null;
-    if(maybeImg){
-      const img = document.createElement('img');
-      img.className = 'step-img';
-      img.src = maybeImg;
-      img.alt = 'تصویر راهنما';
-      body.appendChild(img);
-    }
-
     stepCard.appendChild(num);
     stepCard.appendChild(body);
     wrap.appendChild(stepCard);
   });
 
-  // special handling: Windows video placeholder
-  if(os === 'Windows' && app === 'V2rayN'){
-    // if user set a video link in assets.Windows.V2rayN.video, show it below steps area
-    const v = assets.Windows && assets.Windows.V2rayN && assets.Windows.V2rayN.video;
-    if(v){
-      const vidCard = document.createElement('div');
-      vidCard.className = 'step-card';
-      const num = document.createElement('div');
-      num.className = 'step-num';
-      num.innerText = '—';
-      const body = document.createElement('div');
-      body.className = 'step-body';
-      const vid = document.createElement('video');
-      vid.className = 'step-img';
-      vid.controls = true;
-      vid.src = v;
-      body.appendChild(vid);
-      vidCard.appendChild(num);
-      vidCard.appendChild(body);
-      wrap.appendChild(vidCard);
-    } else {
-      // show placeholder card with instructions to paste video link in assets
-      const vidCard = document.createElement('div');
-      vidCard.className = 'step-card';
-      const num = document.createElement('div');
-      num.className = 'step-num';
-      num.innerText = '—';
-      const body = document.createElement('div');
-      body.className = 'step-body';
-      body.innerHTML = '<p>این بخش به ویدیو آموزشی نیاز دارد. برای اضافه کردن ویدیو، لینک ویدیوی خود را در متغیر <code>assets.Windows.V2rayN.video</code> قرار دهید.</p>';
-      vidCard.appendChild(num);
-      vidCard.appendChild(body);
-      wrap.appendChild(vidCard);
-    }
-  }
+  // کادر دانلود آخرین نسخه
+  const downloadCard = document.createElement('div');
+  downloadCard.className = 'step-card';
+  const num = document.createElement('div');
+  num.className = 'step-num';
+  num.innerText = '🛠';
+  const body = document.createElement('div');
+  body.className = 'step-body';
+  body.innerHTML = `
+    <p>برای دانلود آخرین نسخه برنامه روی دکمه زیر بزنید:</p>
+    <a href="${downloadLinks[os]}" target="_blank" class="btn">دانلود آخرین نسخه</a>
+  `;
+  downloadCard.appendChild(num);
+  downloadCard.appendChild(body);
+  wrap.appendChild(downloadCard);
 }
 
-/* go back step */
 function goBack(step){
-  if(step === 1){
-    document.getElementById('step-os').style.display = 'block';
-    document.getElementById('step-app').style.display = 'none';
-  } else if(step === 2){
-    document.getElementById('step-app').style.display = 'block';
-    document.getElementById('step-tutorial').style.display = 'none';
+  if(step===1){
+    document.getElementById('step-os').style.display='block';
+    document.getElementById('step-app').style.display='none';
+  } else if(step===2){
+    document.getElementById('step-app').style.display='block';
+    document.getElementById('step-tutorial').style.display='none';
   }
-}
-
-/* Optional: small accessibility — pause title animation when user prefers reduced motion */
-if(window.matchMedia && window.matchMedia('(prefers-reduced-motion)').matches){
-  document.querySelectorAll('.title .word').forEach(w=> {
-    w.style.animation = 'none';
-    w.style.opacity = 1;
-    w.style.transform = 'none';
-  });
 }
 </script>
 </body>
