@@ -33,6 +33,7 @@ body{
 .title .word{display:inline-block;background:linear-gradient(90deg,var(--accent1),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
 .card{background:#fff;border-radius:14px;padding:18px;box-shadow:0 8px 28px rgba(20,20,60,0.06);margin-bottom:18px;}
 .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;}
+/* Centered buttons with logo above text */
 .btn{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;width:100%;padding:14px;border-radius:10px;border:1px solid rgba(107,92,255,0.12);background:linear-gradient(180deg,rgba(107,92,255,0.06),rgba(90,200,255,0.02));color:var(--accent1);cursor:pointer;text-align:center;}
 .logo-wrap{width:40px;height:40px;border-radius:8px;background:rgba(107,92,255,0.08);display:flex;align-items:center;justify-content:center;overflow:hidden;}
 .logo-wrap img{width:100%;height:100%;object-fit:cover;display:block;}
@@ -41,13 +42,15 @@ body{
 .step-num{min-width:44px;height:44px;border-radius:50%;background:var(--white);color:var(--accent1);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:16px;}
 .step-body{flex:1;}
 .step-body p{margin:6px 0;line-height:1.6;font-size:15px;}
-.download-card{display:flex;justify-content:center;margin-top:12px;}
-.download-card a{display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,var(--accent1),var(--accent2));color:#fff;border-radius:24px;padding:12px 20px;font-size:15px;text-decoration:none;width:100%;max-width:260px;gap:8px;}
-.download-card a i{font-size:16px;}
+/* Actions (video + download) stacked */
+.actions{display:flex;flex-direction:column;align-items:center;gap:8px;margin-top:12px;}
+.action-btn{display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,var(--accent1),var(--accent2));color:#fff;border-radius:24px;padding:12px 20px;font-size:15px;text-decoration:none;width:100%;max-width:260px;gap:8px;}
+.action-btn i{font-size:16px;}
 .tutorial-title{text-align:center;margin-bottom:8px;color:var(--text);display:flex;flex-direction:column;align-items:center;gap:8px;}
 .tutorial-title .logo-wrap{width:48px;height:48px;}
 .card, .card *, .step-card, .step-card *{font-weight:700!important;}
 
+/* animated title like original */
 .title{
   text-align:center;
   margin:18px 0;
@@ -72,7 +75,6 @@ body{
 @keyframes fadeword{
   to{opacity:1;transform:translateY(0);}
 }
-
 </style>
 </head>
 <body>
@@ -84,7 +86,6 @@ body{
     <span class="word w3">سرویس‌های</span>&nbsp;
     <span class="word w4">M‑VPN</span>
   </div>
-
 
   <div id="step-os" class="card">
     <div style="margin-bottom:8px">۱ — سیستم‌عامل خود را انتخاب کنید</div>
@@ -103,6 +104,8 @@ body{
       <div id="tutorial-title-text"></div>
     </div>
     <div id="tutorial-area" class="tutorial-wrap"></div>
+    <!-- actions area: video (if link exists) + download button -->
+    <div class="actions" id="actions"></div>
     <button class="btn" style="margin-top:12px" onclick="goBack(2)">بازگشت</button>
   </div>
 
@@ -112,23 +115,66 @@ body{
 </div>
 
 <script>
+/* لینک‌های لوگو — اینجا قرار گرفته‌اند */
 const osLogos={Android:"https://raw.githubusercontent.com/logi443/miniapp/refs/heads/main/Android.svg",iOS:"https://raw.githubusercontent.com/logi443/miniapp/refs/heads/main/AppleFilled.svg",Windows:"https://raw.githubusercontent.com/logi443/miniapp/refs/heads/main/WindowsFilled.svg",macOS:"https://raw.githubusercontent.com/logi443/miniapp/refs/heads/main/Macosx.svg"};
-const appLogos={v2rayNg:"https://raw.githubusercontent.com/logi443/miniapp/refs/heads/main/a.png",v2box:"https://raw.githubusercontent.com/logi443/miniapp/refs/heads/main/unnamed.png",Shadowrocket:"https://raw.githubusercontent.com/logi443/miniapp/refs/heads/main/gcxQW6z3_400x400.jpg",Streisand:"https://raw.githubusercontent.com/logi443/miniapp/refs/heads/main/9250996.64.webp",V2rayN:"https://raw.githubusercontent.com/logi443/miniapp/refs/heads/main/a.png"};
+/* اضافه شد: Npv Tunnel */
+const appLogos={v2rayNg:"https://raw.githubusercontent.com/logi443/miniapp/refs/heads/main/a.png",v2box:"https://raw.githubusercontent.com/logi443/miniapp/refs/heads/main/unnamed.png",Shadowrocket:"https://raw.githubusercontent.com/logi443/miniapp/refs/heads/main/gcxQW6z3_400x400.jpg",Streisand:"https://raw.githubusercontent.com/logi443/miniapp/refs/heads/main/9250996.64.webp",V2rayN:"https://raw.githubusercontent.com/logi443/miniapp/refs/heads/main/a.png","Npv Tunnel":"https://raw.githubusercontent.com/logi443/miniapp/refs/heads/main/60x60bb.jpg"};
 
-const appsByOS={Android:["v2rayNg","v2box"],iOS:["v2box","Shadowrocket","Streisand"],Windows:["V2rayN"],macOS:["Streisand","Shadowrocket"]};
+/* ویدئوی آموزشی — خالی باشد دکمه نشان داده نمی‌شود */
+const videoLinks={
+  Android:{v2rayNg:"https://t.me/helpnv443/46",v2box:"https://t.me/helpnv443/44","Npv Tunnel":"https://t.me/helpnv443/62"},
+  iOS:{v2box:"https://t.me/helpnv443/42",Shadowrocket:"",Streisand:"https://t.me/helpnv443/45","Npv Tunnel":"https://t.me/helpnv443/62"},
+  Windows:{V2rayN:"https://t.me/helpnv443/63"},
+  macOS:{Streisand:"",Shadowrocket:""}
+};
 
-const downloadLinks={Android:{v2rayNg:"https://logi443.github.io/v2ray",v2box:"https://play.google.com/store/apps/details?id=dev.hexasoftware.v2box"},iOS:{v2box:"https://apps.apple.com/app/id6446814690",Shadowrocket:"https://apps.apple.com/app/id932747118",Streisand:"https://apps.apple.com/app/id6450534064"},Windows:{V2rayN:"https://github.com/2dust/v2rayN/releases/download/7.15.6/v2rayN-windows-64-SelfContained.zip"},macOS:{Streisand:"https://apps.apple.com/us/app/streisand/id6450534064",Shadowrocket:"https://apps.apple.com/app/id932747118"}};
+/* اضافه شد: Npv Tunnel برای Android و iOS */
+const appsByOS={Android:["v2rayNg","v2box","Npv Tunnel"],iOS:["v2box","Shadowrocket","Streisand","Npv Tunnel"],Windows:["V2rayN"],macOS:["Streisand","Shadowrocket"]};
 
-const tutorials={Android:{v2rayNg:["منوی همبرگری ☰ بالا را بزنید.","از منوی همبرگری گزینه Setting را انتخاب کنید.","گزینه تنظیمات پیشرفته را بزنید و گزینه Allow insecure را فعال کنید.","به صفحه اصلی برگردید، مثبت بالا را بزنید و گزینه وارد کردن از کلیپ‌بورد را انتخاب کنید."],v2box:["ستینگ برنامه را باز کنید.","گزینه Allow insecure را روشن کنید.","از بخش Configs مثبت بالا را بزنید و گزینه Import V2Ray URI from Clipboard را انتخاب کنید.","روی اسم کانفیگ بزنید و از پایین صفحه Slide to connect را به سمت راست بکشید."]},iOS:{v2box:["ستینگ برنامه را باز کنید.","گزینه Allow insecure را روشن کنید.","از بخش Configs مثبت بالا را بزنید و گزینه Import V2Ray URI from Clipboard را انتخاب کنید.","روی اسم کانفیگ بزنید و از پایین صفحه Slide to connect را به سمت راست بکشید."],Shadowrocket:["روی منو Config بزنید و + بالا را بزنید، کانفیگ خود را Paste کرده و Download را بزنید.","به منوی Home برگردید، روی اسم کانفیگ لمس کنید و دکمه اتصال را بزنید.","اگر وصل نشد، روی علامت تعجب بزنید، گزینه TLS را انتخاب و Allow insecure را روشن کنید. سپس یک مرحله به عقب برگردید، Save را بزنید و متصل شوید."],Streisand:["ستینگ برنامه را باز کنید.","از بالا گزینه سوم Subscription را انتخاب کنید.","گزینه‌های Update on open و Allow insecure را روشن کنید.","از تب Home مثبت بالا را بزنید و گزینه Import from clipboard را انتخاب کنید.","روی اسم کانفیگ لمس کنید و دکمه اتصال را بزنید."]},Windows:{V2rayN:["این بخش نیاز به آموزش تصویری دارد. لطفاً ویدیوی زیر را مشاهده کنید."]},macOS:{Streisand:["ستینگ برنامه را باز کنید.","از بالا گزینه سوم Subscription را انتخاب کنید.","گزینه‌های Update on open و Allow insecure را روشن کنید.","از تب Home مثبت بالا را بزنید و گزینه Import from clipboard را انتخاب کنید.","روی اسم کانفیگ لمس کنید و دکمه اتصال را بزنید."],Shadowrocket:["روی منو Config بزنید و + بالا را بزنید، کانفیگ خود را Paste کرده و Download را بزنید.","به منوی Home برگردید، روی اسم کانفیگ لمس کنید و دکمه اتصال را بزنید.","اگر وصل نشد، روی علامت تعجب بزنید، گزینه TLS را انتخاب و Allow insecure را روشن کنید. سپس یک مرحله به عقب برگردید، Save را بزنید و متصل شوید."]}};
+/* لینک دانلود — placeholder برای Npv Tunnel هم اضافه شد */
+const downloadLinks={Android:{v2rayNg:"https://logi443.github.io/v2ray",v2box:"https://play.google.com/store/apps/details?id=dev.hexasoftware.v2box","Npv Tunnel":"https://play.google.com/store/apps/details?id=com.napsternetlabs.napsternetv"},iOS:{v2box:"https://apps.apple.com/app/id6446814690",Shadowrocket:"https://apps.apple.com/app/id932747118",Streisand:"https://apps.apple.com/app/id6450534064","Npv Tunnel":"https://apps.apple.com/app/id1629465476"},Windows:{V2rayN:"https://github.com/2dust/v2rayN/releases/download/7.15.6/v2rayN-windows-64-SelfContained.zip"},macOS:{Streisand:"https://apps.apple.com/us/app/streisand/id6450534064",Shadowrocket:"https://apps.apple.com/app/id932747118"}};
 
+/* آموزش‌ها — اضافه شد: Npv Tunnel */
+const tutorials={
+  Android:{
+    v2rayNg:["منوی همبرگری ☰ بالا را بزنید.","از منوی همبرگری گزینه Setting را انتخاب کنید.","گزینه تنظیمات پیشرفته را بزنید و گزینه Allow insecure را فعال کنید.","به صفحه اصلی برگردید، مثبت بالا را بزنید و گزینه وارد کردن از کلیپ‌بورد را انتخاب کنید."],
+    v2box:["ستینگ برنامه را باز کنید.","گزینه Allow insecure را روشن کنید.","از بخش Configs مثبت بالا را بزنید و گزینه Import V2Ray URI from Clipboard را انتخاب کنید.","روی اسم کانفیگ بزنید و از پایین صفحه Slide to connect را به سمت راست بکشید."],
+    "Npv Tunnel":[
+      "ابتدا کانفیگ‌تون را کپی کنید.",
+      "بخش configs مثبت را بزنید.",
+      "گزینه «Import config from Clipboard» را بزنید، سپس «V2ray config» را انتخاب کنید و در ادامه «Allow past» را بزنید.",
+      "پس از وارد شدن، روی اسم کانفیگ لمس کنید و از منوی Home دکمه اتصال را بزنید."
+    ]
+  },
+  iOS:{
+    v2box:["ستینگ برنامه را باز کنید.","گزینه Allow insecure را روشن کنید.","از بخش Configs مثبت بالا را بزنید و گزینه Import V2Ray URI from Clipboard را انتخاب کنید.","روی اسم کانفیگ بزنید و از پایین صفحه Slide to connect را به سمت راست بکشید."],
+    Shadowrocket:["روی منو Config بزنید و + بالا را بزنید، کانفیگ خود را Paste کرده و Download را بزنید.","به منوی Home برگردید، روی اسم کانفیگ لمس کنید و دکمه اتصال را بزنید.","اگر وصل نشد، روی علامت تعجب بزنید، گزینه TLS را انتخاب و Allow insecure را روشن کنید. سپس یک مرحله به عقب برگردید، Save را بزنید و متصل شوید."],
+    Streisand:["ستینگ برنامه را باز کنید.","از بالا گزینه سوم Subscription را انتخاب کنید.","گزینه‌های Update on open و Allow insecure را روشن کنید.","از تب Home مثبت بالا را بزنید و گزینه Import from clipboard را انتخاب کنید.","روی اسم کانفیگ لمس کنید و دکمه اتصال را بزنید."],
+    "Npv Tunnel":[
+      "ابتدا کانفیگ‌تون را کپی کنید.",
+      "بخش configs مثبت را بزنید.",
+      "گزینه «Import config from Clipboard» را بزنید، سپس «V2ray config» را انتخاب کنید و در ادامه «Allow past» را بزنید.",
+      "پس از وارد شدن، روی اسم کانفیگ لمس کنید و از منوی Home دکمه اتصال را بزنید."
+    ]
+  },
+  Windows:{ V2rayN:["این بخش نیاز به آموزش تصویری دارد. لطفاً ویدیوی زیر را مشاهده کنید."] },
+  macOS:{
+    Streisand:["ستینگ برنامه را باز کنید.","از بالا گزینه سوم Subscription را انتخاب کنید.","گزینه‌های Update on open و Allow insecure را روشن کنید.","از تب Home مثبت بالا را بزنید و گزینه Import from clipboard را انتخاب کنید.","روی اسم کانفیگ لمس کنید و دکمه اتصال را بزنید."],
+    Shadowrocket:["روی منو Config بزنید و + بالا را بزنید، کانفیگ خود را Paste کرده و Download را بزنید.","به منوی Home برگردید، روی اسم کانفیگ لمس کنید و دکمه اتصال را بزنید.","اگر وصل نشد، روی علامت تعجب بزنید، گزینه TLS را انتخاب و Allow insecure را روشن کنید. سپس یک مرحله به عقب برگردید، Save را بزنید و متصل شوید."]
+  }
+};
+
+/* Tools */
+function capitalize(s){return s.charAt(0).toUpperCase()+s.slice(1).toLowerCase();}
 function makeLogo(url){const wrap=document.createElement('span');wrap.className='logo-wrap';if(url){const img=document.createElement('img');img.src=url;img.alt='logo';wrap.appendChild(img);}return wrap;}
+
 (function renderOSButtons(){const grid=document.getElementById('os-grid');Object.keys(appsByOS).forEach(os=>{const btn=document.createElement('button');btn.className='btn';const logo=makeLogo(osLogos[os]||'');const label=document.createElement('span');label.textContent=os;btn.appendChild(logo);btn.appendChild(label);btn.onclick=()=>selectOS(os);grid.appendChild(btn);});})();
 
-function selectOS(os){document.getElementById('step-os').style.display='none';document.getElementById('step-app').style.display='block';const grid=document.getElementById('apps');grid.innerHTML='';(appsByOS[os]||[]).forEach(app=>{const btn=document.createElement('button');btn.className='btn';const logo=makeLogo(appLogos[app]||'');const label=document.createElement('span');label.textContent=app;btn.appendChild(logo);btn.appendChild(label);btn.onclick=()=>selectApp(os,app);grid.appendChild(btn);});}
+function selectOS(os){document.getElementById('step-os').style.display='none';document.getElementById('step-app').style.display='block';const grid=document.getElementById('apps');grid.innerHTML='';(appsByOS[os]||[]).forEach(app=>{const btn=document.createElement('button');btn.className='btn';const logo=makeLogo(appLogos[app]||'');const label=document.createElement('span');label.textContent=capitalize(app);btn.appendChild(logo);btn.appendChild(label);btn.onclick=()=>selectApp(os,app);grid.appendChild(btn);});}
 
 function selectApp(os,app){document.getElementById('step-app').style.display='none';document.getElementById('step-tutorial').style.display='block';renderTutorial(os,app);}
 
-function renderTutorial(os,app){const title=document.getElementById('tutorial-title');const logo=document.getElementById('tutorial-logo');const text=document.getElementById('tutorial-title-text');title.style.display='flex';text.textContent='آموزش گام‌به‌گام برنامهٔ '+app;logo.src=appLogos[app]||'';logo.style.display=appLogos[app]?'block':'none';const wrap=document.getElementById('tutorial-area');wrap.innerHTML='';(tutorials[os]&&tutorials[os][app]||[]).forEach((t,i)=>{const c=document.createElement('div');c.className='step-card';c.innerHTML='<div class=\"step-num\">'+(i+1)+'</div><div class=\"step-body\"><p>'+t+'</p></div>';wrap.appendChild(c);});const link=(downloadLinks[os]&&downloadLinks[os][app])?downloadLinks[os][app]:'#';const d=document.createElement('div');d.className='download-card';d.innerHTML='<a href=\"'+link+'\" target=\"_blank\"><i class=\"fa-solid fa-download\"></i> دانلود آخرین ورژن</a>';wrap.appendChild(d);}
+function renderTutorial(os,app){const title=document.getElementById('tutorial-title');const logo=document.getElementById('tutorial-logo');const text=document.getElementById('tutorial-title-text');title.style.display='flex';text.textContent='آموزش گام‌به‌گام برنامهٔ '+capitalize(app);logo.src=appLogos[app]||'';logo.style.display=appLogos[app]?'block':'none';const wrap=document.getElementById('tutorial-area');wrap.innerHTML='';(tutorials[os]&&tutorials[os][app]||[]).forEach((t,i)=>{const c=document.createElement('div');c.className='step-card';c.innerHTML='<div class=\"step-num\">'+(i+1)+'</div><div class=\"step-body\"><p>'+t+'</p></div>';wrap.appendChild(c);});const actions=document.getElementById('actions');actions.innerHTML='';const vlink=(videoLinks[os]&&videoLinks[os][app])?videoLinks[os][app]:"";if(vlink){const v=document.createElement('a');v.className='action-btn';v.href=vlink;v.target='_blank';v.rel='noopener';v.innerHTML='<i class=\"fa-solid fa-play\"></i> آموزش تصویری';actions.appendChild(v);}const link=(downloadLinks[os]&&downloadLinks[os][app])?downloadLinks[os][app]:'#';const d=document.createElement('a');d.className='action-btn';d.href=link;d.target='_blank';d.rel='noopener';d.innerHTML='<i class=\"fa-solid fa-download\"></i> دانلود آخرین ورژن';actions.appendChild(d);}
 function goBack(step){if(step===1){document.getElementById('step-os').style.display='block';document.getElementById('step-app').style.display='none';}else if(step===2){document.getElementById('step-app').style.display='block';document.getElementById('step-tutorial').style.display='none';}}
 </script>
 </body></html>
