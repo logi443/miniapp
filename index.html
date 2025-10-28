@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>M‑VPN راهنمای اتصال</title>
+<title>M-VPN راهنمای اتصال</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <link rel="preload" href="https://cdn.jsdelivr.net/gh/rastikerdar/iransans-font@v1.0.5/dist/font-face.css" as="style">
 <style>
@@ -84,7 +84,7 @@ body{
 .action-btn:active{ transform: translateY(-1px) scale(1.01); }
 .action-btn i{font-size:16px;}
 
-/* گزینه ۱: رنگ متمایز برای دو دکمه */
+/* رنگ متمایز برای دو دکمه */
 .action-btn.video{    /* آموزش ویدیویی: فیروزه‌ای */
   background: linear-gradient(135deg, var(--accent2), #00bfff);
 }
@@ -112,7 +112,7 @@ body{
 .title .word.w1{animation-delay:0ms;}
 .title .word.w2{animation-delay:220ms;}
 .title .word.w3{animation-delay:440ms;}
-title .word.w4{animation-delay:660ms;}
+.title .word.w4{animation-delay:660ms;}
 .title .word{
   background:linear-gradient(90deg,var(--accent1),var(--accent2));
   -webkit-background-clip:text;
@@ -128,7 +128,7 @@ title .word.w4{animation-delay:660ms;}
     <span class="word w1">راهنمای</span>&nbsp;
     <span class="word w2">اتصال</span>&nbsp;
     <span class="word w3">سرویس‌های</span>&nbsp;
-    <span class="word w4">M‑VPN</span>
+    <span class="word w4">M-VPN</span>
   </div>
 
   <!-- دکمه عضویت در کانال (فیروزه‌ای) -->
@@ -162,7 +162,7 @@ title .word.w4{animation-delay:660ms;}
   </div>
 
   <div class="footer" style="text-align:center;color:var(--muted);font-size:13px;">
-    طراحی شده توسط تیم <a href="https://t.me/nv443" target="_blank" style="color:var(--accent1);text-decoration:underline;">M‑VPN</a>
+    طراحی شده توسط تیم <a href="https://t.me/nv443" target="_blank" style="color:var(--accent1);text-decoration:underline;">M-VPN</a>
   </div>
 </div>
 
@@ -201,7 +201,7 @@ const appsByOS={
   macOS:["Streisand","Shadowrocket","v2box"]
 };
 
-/* لینک دانلود‌ها */
+/* لینک دانلود‌ها (برای ویندوز داینامیک می‌گیریم) */
 const downloadLinks={
   Android:{
     v2rayNg:"https://logi443.github.io/v2ray",
@@ -214,11 +214,11 @@ const downloadLinks={
     Streisand:"https://apps.apple.com/app/id6450534064",
     "Npv Tunnel":"https://apps.apple.com/app/id1629465476"
   },
-  Windows:{ V2rayN:"https://github.com/2dust/v2rayN/releases/download/7.15.6/v2rayN-windows-64-SelfContained.zip" },
+  Windows:{ V2rayN:"GITHUB_AUTO" }, /* ← فقط نشانه؛ لینک واقعی را از API می‌گیریم */
   macOS:{
     Streisand:"https://apps.apple.com/us/app/streisand/id6450534064",
     Shadowrocket:"https://apps.apple.com/app/id932747118",
-    v2box:"https://apps.apple.com/us/app/v2box-v2ray-client/id6446814690" 
+    v2box:"https://apps.apple.com/us/app/v2box-v2ray-client/id6446814690"
   }
 };
 
@@ -252,6 +252,37 @@ const tutorials={
     v2box:["ستینگ برنامه را باز کنید.","گزینه Allow insecure را روشن کنید.","از بخش Configs مثبت بالا را بزنید و گزینه Import V2Ray URI from Clipboard را انتخاب کنید.","روی اسم کانفیگ بزنید و از پایین صفحه Slide to connect را به سمت راست بکشید."]
   }
 };
+
+/* ---------------- دانلود خودکار V2rayN (Windows) با ترتیب دلخواه ---------------- */
+const FALLBACK_V2RAYN =
+  "https://github.com/2dust/v2rayN/releases/download/7.15.6/v2rayN-windows-64-SelfContained.zip";
+
+async function fetchPreferredV2rayN(){
+  const api = "https://api.github.com/repos/2dust/v2rayN/releases/latest";
+  try{
+    const res = await fetch(api, { headers: { "Accept": "application/vnd.github+json" }});
+    if(!res.ok) throw new Error("HTTP "+res.status);
+    const data = await res.json();
+    const assets = Array.isArray(data.assets) ? data.assets : [];
+
+    const nameEq = (a, n) => (a.name||"").toLowerCase() === n;
+
+    // 1) SelfContained 64
+    const want1 = assets.find(a => nameEq(a, "v2rayn-windows-64-selfcontained.zip"));
+    if(want1) return { url: want1.browser_download_url, tag: data.tag_name || "" };
+
+    // 2) 64 معمولی
+    const want2 = assets.find(a => nameEq(a, "v2rayn-windows-64.zip"));
+    if(want2) return { url: want2.browser_download_url, tag: data.tag_name || "" };
+
+    // 3) fallback ثابت
+    return { url: FALLBACK_V2RAYN, tag: data.tag_name || "" };
+  }catch(err){
+    console.error("GitHub fetch error:", err);
+    return { url: FALLBACK_V2RAYN, tag: "" };
+  }
+}
+/* ------------------------------------------------------------------------------ */
 
 /* --- Helpers for staggered animations --- */
 function animateStagger(container){
@@ -294,7 +325,7 @@ function selectApp(os,app){
   renderTutorial(os,app);
 }
 
-function renderTutorial(os,app){
+async function renderTutorial(os,app){
   const title=document.getElementById('tutorial-title');
   const logo=document.getElementById('tutorial-logo');
   const text=document.getElementById('tutorial-title-text');
@@ -326,12 +357,26 @@ function renderTutorial(os,app){
     actions.appendChild(v);
   }
 
-  const link=(downloadLinks[os]&&downloadLinks[os][app])?downloadLinks[os][app]:'#';
   const d=document.createElement('a');
   d.className='action-btn download';
-  d.href=link; d.target='_blank'; d.rel='noopener';
+  d.target='_blank'; d.rel='noopener';
   d.innerHTML='<i class="fa-solid fa-download"></i> دانلود آخرین ورژن';
-  actions.appendChild(d);
+
+  if(os==="Windows" && app==="V2rayN"){
+    d.href = FALLBACK_V2RAYN; // تا زمان واکشی
+    actions.appendChild(d);
+
+    try{
+      const latest = await fetchPreferredV2rayN();
+      d.href = latest.url; // فقط لینک را آپدیت می‌کنیم؛ متن تغییری نمی‌کند
+    }catch{
+      d.href = FALLBACK_V2RAYN;
+    }
+  } else {
+    const link=(downloadLinks[os]&&downloadLinks[os][app])?downloadLinks[os][app]:'#';
+    d.href=link;
+    actions.appendChild(d);
+  }
 }
 
 function goBack(step){
@@ -345,4 +390,5 @@ function goBack(step){
   }
 }
 </script>
-</body></html>
+</body>
+</html>
