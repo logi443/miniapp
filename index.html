@@ -71,7 +71,10 @@ body{
 }
 
 .btn {
-  display:inline-block;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
   width:100%;
   padding:12px 14px;
   border-radius:10px;
@@ -82,6 +85,7 @@ body{
   cursor:pointer;
   text-align:center;
 }
+.btn img{width:24px;height:24px;border-radius:6px;}
 .btn:active{ transform:translateY(1px) }
 
 .tutorial-wrap{ margin-top:12px; display:flex; flex-direction:column; gap:12px; }
@@ -121,28 +125,9 @@ body{
 .footer{ margin-top:10px; text-align:center; color:var(--muted); font-size:13px; }
 .footer a{ color:var(--accent1); text-decoration:underline; font-weight:700; }
 
-.step-icon{ width:24px; height:24px; margin-left:6px; vertical-align:middle; }
+.download-card{ display:flex; justify-content:center; margin-top:12px; }
+.download-card a{ display:flex; align-items:center; justify-content:center; background: linear-gradient(135deg, var(--accent1), var(--accent2)); color:#fff; border-radius:24px; padding:12px 20px; font-weight:700; font-size:15px; text-decoration:none; width:100%; max-width:260px; gap:8px; }
 
-.download-card{
-  display:flex;
-  justify-content:center;
-  margin-top:12px;
-}
-.download-card a{
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  background: linear-gradient(135deg, var(--accent1), var(--accent2));
-  color:#fff;
-  border-radius:24px;
-  padding:12px 20px;
-  font-weight:700;
-  font-size:15px;
-  text-decoration:none;
-  width:100%;
-  max-width:260px;
-  gap:8px;
-}
 @media (max-width:420px){ .grid{grid-template-columns:1fr} }
 </style>
 </head>
@@ -177,39 +162,37 @@ body{
   <button class="back" style="margin-top:12px" onclick="goBack(2)">بازگشت</button>
 </div>
 
-<div class="footer">طراحی شده توسط تیم <a href="https://t.me/nv444" target="_blank" rel="noopener">M-VPN</a></div>
+<div class="footer">طراحی شده توسط تیم <a href="https://t.me/nv443" target="_blank" rel="noopener">M-VPN</a></div>
 </div>
 
 <script>
+const appIcons = {
+  v2rayNg: "https://raw.githubusercontent.com/2dust/v2rayNG/master/app/src/main/res/mipmap-xxhdpi/ic_launcher.png",
+  v2box: "https://is1-ssl.mzstatic.com/image/thumb/Purple116/v4/30/7f/9f/307f9f91-d648-6d5f-87a0-37902b177a4b/AppIcon-0-1x_U007emarketing-0-7-0-85-220.png/512x512bb.jpg",
+  Shadowrocket: "https://is1-ssl.mzstatic.com/image/thumb/Purple116/v4/92/b3/4d/92b34d6e-3c7f-6c7c-8b16-0cb7f94b3cb1/AppIcon-0-1x_U007emarketing-0-10-0-85-220.png/512x512bb.jpg",
+  Streisand: "https://is1-ssl.mzstatic.com/image/thumb/Purple126/v4/89/06/11/89061134-5d1e-63ff-44d1-7a3a045d1b25/AppIcon-0-1x_U007emarketing-0-7-0-85-220.png/512x512bb.jpg",
+  V2rayN: "https://github.com/2dust/v2rayN/blob/master/v2rayN/v2rayN/Resources/icon.ico?raw=true"
+};
+
 const appsByOS = {
   Android: ["v2rayNg","v2box"],
   iOS: ["v2box","Shadowrocket","Streisand"],
   Windows: ["V2rayN"],
-  macOS: ["Streisand"]
-};
-
-const icons = {
-  Android: "https://img.icons8.com/color/48/000000/android-os.png",
-  iOS: "https://img.icons8.com/ios-filled/50/000000/ios-logo.png",
-  Windows: "https://img.icons8.com/color/48/000000/windows-10.png",
-  macOS: "https://img.icons8.com/ios-filled/50/000000/mac-os.png"
+  macOS: ["Streisand","Shadowrocket"]
 };
 
 const downloadLinks = {
-  Android: { v2rayNg:"https://play.google.com/store/apps/details?id=com.v2rayng", v2box:"https://play.google.com/store/apps/details?id=com.v2box" },
-  iOS: { v2box:"https://apps.apple.com/app/id_v2box", Shadowrocket:"https://apps.apple.com/app/id_shadowrocket", Streisand:"https://apps.apple.com/app/id_streisand" },
-  Windows: { V2rayN:"https://example.com/windows-download" },
-  macOS: { Streisand:"https://example.com/macos-download" }
+  Android: { v2rayNg: "https://logi443.github.io/v2ray", v2box: "https://play.google.com/store/apps/details?id=dev.hexasoftware.v2box" },
+  iOS: { v2box: "https://apps.apple.com/app/id6446814690", Shadowrocket: "https://apps.apple.com/app/id932747118", Streisand: "https://apps.apple.com/app/id6450534064" },
+  Windows: { V2rayN: "https://github.com/2dust/v2rayN/releases/download/7.15.6/v2rayN-windows-64-SelfContained.zip" },
+  macOS: { Streisand: "https://apps.apple.com/us/app/streisand/id6450534064", Shadowrocket: "https://apps.apple.com/app/id932747118" }
 };
 
 const tutorials = {
-  Android: { v2rayNg:["منوی همبرگری ☰ بالا را بزنید.","از منوی همبرگری گزینه Setting را انتخاب کنید.","گزینه تنظیمات پیشرفته را بزنید و گزینه Allow insecure را فعال کنید.","به صفحه اصلی برگردید، مثبت بالا را بزنید و گزینه وارد کردن از کلیپ‌بورد را انتخاب کنید."],
-            v2box:["ستینگ برنامه را باز کنید.","گزینه Allow insecure را روشن کنید.","از بخش Configs مثبت بالا را بزنید و گزینه Import V2Ray URI from Clipboard را انتخاب کنید.","روی اسم کانفیگ بزنید و از پایین صفحه Slide to connect را به سمت راست بکشید."]},
-  iOS: { v2box:["ستینگ برنامه را باز کنید.","گزینه Allow insecure را روشن کنید.","از بخش Configs مثبت بالا را بزنید و گزینه Import V2Ray URI from Clipboard را انتخاب کنید.","روی اسم کانفیگ بزنید و از پایین صفحه Slide to connect را به سمت راست بکشید."],
-         Shadowrocket:["روی منو Config بزنید و + بالا را بزنید، کانفیگ خود را Paste کرده و Download را بزنید.","به منوی Home برگردید، روی اسم کانفیگ لمس کنید و دکمه اتصال را بزنید.","اگر وصل نشد، روی علامت تعجب بزنید، گزینه TLS را انتخاب و Allow insecure را روشن کنید. سپس یک مرحله به عقب برگردید، Save را بزنید و متصل شوید."],
-         Streisand:["ستینگ برنامه را باز کنید.","از بالا گزینه سوم Subscription را انتخاب کنید.","گزینه‌های Update on open و Allow insecure را روشن کنید.","از تب Home مثبت بالا را بزنید و گزینه Import from clipboard را انتخاب کنید.","روی اسم کانفیگ لمس کنید و دکمه اتصال را بزنید."]},
+  Android: { v2rayNg:["منوی همبرگری ☰ بالا را بزنید.","از منوی همبرگری گزینه Setting را انتخاب کنید.","گزینه تنظیمات پیشرفته را بزنید و گزینه Allow insecure را فعال کنید.","به صفحه اصلی برگردید، مثبت بالا را بزنید و گزینه وارد کردن از کلیپ‌بورد را انتخاب کنید."], v2box:["ستینگ برنامه را باز کنید.","گزینه Allow insecure را روشن کنید.","از بخش Configs مثبت بالا را بزنید و گزینه Import V2Ray URI from Clipboard را انتخاب کنید.","روی اسم کانفیگ بزنید و از پایین صفحه Slide to connect را به سمت راست بکشید."]},
+  iOS: { v2box:["ستینگ برنامه را باز کنید.","گزینه Allow insecure را روشن کنید.","از بخش Configs مثبت بالا را بزنید و گزینه Import V2Ray URI from Clipboard را انتخاب کنید.","روی اسم کانفیگ بزنید و از پایین صفحه Slide to connect را به سمت راست بکشید."], Shadowrocket:["روی منو Config بزنید و + بالا را بزنید، کانفیگ خود را Paste کرده و Download را بزنید.","به منوی Home برگردید، روی اسم کانفیگ لمس کنید و دکمه اتصال را بزنید.","اگر وصل نشد، روی علامت تعجب بزنید، گزینه TLS را انتخاب و Allow insecure را روشن کنید. سپس یک مرحله به عقب برگردید، Save را بزنید و متصل شوید."], Streisand:["ستینگ برنامه را باز کنید.","از بالا گزینه سوم Subscription را انتخاب کنید.","گزینه‌های Update on open و Allow insecure را روشن کنید.","از تب Home مثبت بالا را بزنید و گزینه Import from clipboard را انتخاب کنید.","روی اسم کانفیگ لمس کنید و دکمه اتصال را بزنید."]},
   Windows:{ V2rayN:["این بخش نیاز به آموزش تصویری دارد. لطفاً ویدیوی زیر را مشاهده کنید."] },
-  macOS:{ Streisand:["ستینگ برنامه را باز کنید.","از بالا گزینه سوم Subscription را انتخاب کنید.","گزینه‌های Update on open و Allow insecure را روشن کنید.","از تب Home مثبت بالا را بزنید و گزینه Import from clipboard را انتخاب کنید.","روی اسم کانفیگ لمس کنید و دکمه اتصال را بزنید."]}
+  macOS:{ Streisand:["ستینگ برنامه را باز کنید.","از بالا گزینه سوم Subscription را انتخاب کنید.","گزینه‌های Update on open و Allow insecure را روشن کنید.","از تب Home مثبت بالا را بزنید و گزینه Import from clipboard را انتخاب کنید.","روی اسم کانفیگ لمس کنید و دکمه اتصال را بزنید."], Shadowrocket:["روی منو Config بزنید و + بالا را بزنید، کانفیگ خود را Paste کرده و Download را بزنید.","به منوی Home برگردید، روی اسم کانفیگ لمس کنید و دکمه اتصال را بزنید.","اگر وصل نشد، روی علامت تعجب بزنید، گزینه TLS را انتخاب و Allow insecure را روشن کنید. سپس یک مرحله به عقب برگردید، Save را بزنید و متصل شوید."] }
 };
 
 let currentOS = null;
@@ -224,7 +207,8 @@ function selectOS(os){
   apps.forEach(app=>{
     const b = document.createElement('button');
     b.className = 'btn';
-    b.innerHTML = `<img src="${icons[os]}" class="step-icon"> ${app}`;
+    const icon = appIcons[app] ? `<img src='${appIcons[app]}' alt='${app} icon'>` : '';
+    b.innerHTML = `${icon}${app}`;
     b.onclick = ()=> selectApp(app);
     appsDiv.appendChild(b);
   });
@@ -254,11 +238,10 @@ function renderTutorial(os, app){
     wrap.appendChild(stepCard);
   });
 
-  // کادر دانلود آخرین نسخه به صورت کامل قابل کلیک
   const downloadCard = document.createElement('div');
   downloadCard.className = 'download-card';
   const downloadBtn = document.createElement('a');
-  downloadBtn.href = downloadLinks[os][app];
+  downloadBtn.href = (downloadLinks[os] && downloadLinks[os][app]) ? downloadLinks[os][app] : '#';
   downloadBtn.target = "_blank";
   downloadBtn.innerHTML = '⬇ دانلود آخرین ورژن';
   downloadCard.appendChild(downloadBtn);
