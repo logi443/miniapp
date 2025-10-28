@@ -15,6 +15,7 @@
   --white: #ffffff;
   --text: #222;
   --muted: #6b6b78;
+  --download-text: #FFD700; /* طلایی روشن برای متن دانلود */
 }
 *{box-sizing:border-box}
 html,body{height:100%}
@@ -116,6 +117,9 @@ body{
 .step-body p{ margin:6px 0; line-height:1.5; font-size:15px; }
 .step-body img.step-img{ display:block; width:100%; border-radius:8px; margin:8px 0 0 0; box-shadow: 0 8px 20px rgba(10,10,30,0.08); }
 
+/* متن دانلود با رنگ مشخص */
+.step-body .download-text{ color: var(--download-text); font-weight:700; font-size:16px; }
+
 .back{ margin-top:12px; display:inline-block; padding:10px 14px; border-radius:10px; border:1px solid var(--accent1); background:#fff; color:var(--accent1); font-weight:700; cursor:pointer; }
 
 .footer{ margin-top:10px; text-align:center; color:var(--muted); font-size:13px; }
@@ -157,7 +161,7 @@ body{
   <button class="back" style="margin-top:12px" onclick="goBack(2)">بازگشت</button>
 </div>
 
-<div class="footer">طراحی شده توسط تیم <a href="https://t.me/nv443" target="_blank" rel="noopener">M-VPN</a></div>
+<div class="footer">طراحی شده توسط تیم <a href="https://t.me/nv444" target="_blank" rel="noopener">M-VPN</a></div>
 </div>
 
 <script>
@@ -175,11 +179,23 @@ const icons = {
   macOS: "https://img.icons8.com/ios-filled/50/000000/mac-os.png"
 };
 
+/* لینک دانلود جداگانه برای هر برنامه */
 const downloadLinks = {
-  Android: "https://play.google.com/store/apps/details?id=com.example",
-  iOS: "https://apps.apple.com/app/id123456789",
-  Windows: "https://example.com/windows-download",
-  macOS: "https://example.com/macos-download"
+  Android: {
+    v2rayNg: "https://github.com/2dust/v2rayN/releases/download/7.15.6/v2rayN-windows-64-SelfContained.zip",
+    v2box: "https://play.google.com/store/apps/details?id=dev.hexasoftware.v2box"
+  },
+  iOS: {
+    v2box: "https://apps.apple.com/app/id6446814690",
+    Shadowrocket: "https://apps.apple.com/app/id932747118",
+    Streisand: "https://apps.apple.com/app/id6450534064"
+  },
+  Windows: {
+    V2rayN: "https://example.com/windows-download"
+  },
+  macOS: {
+    Streisand: "https://apps.apple.com/us/app/streisand/id6450534064"
+  }
 };
 
 const tutorials = {
@@ -271,7 +287,7 @@ function renderTutorial(os, app){
     wrap.appendChild(stepCard);
   });
 
-  // کادر دانلود آخرین نسخه
+  // کادر دانلود آخرین نسخه برای برنامه انتخابی
   const downloadCard = document.createElement('div');
   downloadCard.className = 'step-card';
   const num = document.createElement('div');
@@ -280,8 +296,8 @@ function renderTutorial(os, app){
   const body = document.createElement('div');
   body.className = 'step-body';
   body.innerHTML = `
-    <p>برای دانلود آخرین نسخه برنامه روی دکمه زیر بزنید:</p>
-    <a href="${downloadLinks[os]}" target="_blank" class="btn">دانلود آخرین نسخه</a>
+    <p class="download-text">برای دانلود آخرین نسخه برنامه روی دکمه زیر بزنید:</p>
+    <a href="${downloadLinks[os][app]}" target="_blank" class="btn">دانلود آخرین نسخه</a>
   `;
   downloadCard.appendChild(num);
   downloadCard.appendChild(body);
