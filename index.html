@@ -10,8 +10,8 @@
 @import url('https://cdn.jsdelivr.net/gh/rastikerdar/iransans-font@v1.0.5/dist/font-face.css');
 
 :root{
-  --accent1:#6b5cff;
-  --accent2:#5ac8ff;
+  --accent1:#6b5cff;   /* بنفش (دانلود) */
+  --accent2:#5ac8ff;   /* فیروزه‌ای (آموزش ویدیویی) */
   --card-bg:linear-gradient(135deg,var(--accent1),var(--accent2));
   --white:#fff;
   --text:#222;
@@ -33,24 +33,59 @@ body{
 .title .word{display:inline-block;background:linear-gradient(90deg,var(--accent1),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
 .card{background:#fff;border-radius:14px;padding:18px;box-shadow:0 8px 28px rgba(20,20,60,0.06);margin-bottom:18px;}
 .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;}
-/* Centered buttons with logo above text */
-.btn{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;width:100%;padding:14px;border-radius:10px;border:1px solid rgba(107,92,255,0.12);background:linear-gradient(180deg,rgba(107,92,255,0.06),rgba(90,200,255,0.02));color:var(--accent1);cursor:pointer;text-align:center;}
+
+/* انیمیشن‌های عمومی */
+@keyframes fadeUp { from{opacity:0; transform:translateY(10px)} to{opacity:1; transform:translateY(0)} }
+@keyframes fadeIn { from{opacity:0} to{opacity:1} }
+.stagger-item{ opacity:0; animation: fadeUp .5s ease forwards; }
+.step-appear{ opacity:0; animation: fadeUp .5s ease forwards; }
+.actions-appear{ opacity:0; animation: fadeIn .5s .2s ease forwards; }
+
+/* دکمه‌های اصلی (OS و برنامه‌ها) — وسط‌چین + انیمیشن هاور */
+.btn{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;width:100%;
+  padding:14px;border-radius:10px;border:1px solid rgba(107,92,255,0.12);
+  background:linear-gradient(180deg,rgba(107,92,255,0.06),rgba(90,200,255,0.02));
+  color:var(--accent1);cursor:pointer;text-align:center;
+  transition:transform .18s ease, box-shadow .18s ease, filter .18s ease;
+  will-change: transform;
+}
+.btn:hover{ transform:translateY(-3px) scale(1.02); box-shadow:0 10px 26px rgba(20,20,60,.10); }
+.btn:active{ transform:translateY(-1px) scale(1.01); }
 .logo-wrap{width:40px;height:40px;border-radius:8px;background:rgba(107,92,255,0.08);display:flex;align-items:center;justify-content:center;overflow:hidden;}
 .logo-wrap img{width:100%;height:100%;object-fit:cover;display:block;}
+
 .tutorial-wrap{margin-top:12px;display:flex;flex-direction:column;gap:12px;}
 .step-card{display:flex;gap:12px;align-items:flex-start;background:var(--card-bg);color:var(--white);border-radius:12px;padding:14px;box-shadow:0 8px 20px rgba(107,92,255,0.12);}
 .step-num{min-width:44px;height:44px;border-radius:50%;background:var(--white);color:var(--accent1);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:16px;}
 .step-body{flex:1;}
 .step-body p{margin:6px 0;line-height:1.6;font-size:15px;}
-/* Actions (video + download) stacked */
+
+/* ناحیه اکشن‌ها (ویدئو + دانلود) */
 .actions{display:flex;flex-direction:column;align-items:center;gap:8px;margin-top:12px;}
-.action-btn{display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,var(--accent1),var(--accent2));color:#fff;border-radius:24px;padding:12px 20px;font-size:15px;text-decoration:none;width:100%;max-width:260px;gap:8px;}
+.action-btn{
+  display:flex;align-items:center;justify-content:center;color:#fff;border-radius:24px;padding:12px 20px;
+  font-size:15px;text-decoration:none;width:100%;max-width:260px;gap:8px;
+  transition: transform .18s ease, box-shadow .18s ease, filter .18s ease;
+  will-change: transform;
+}
+.action-btn:hover{ transform: translateY(-3px) scale(1.02); box-shadow:0 10px 26px rgba(20,20,60,.18); }
+.action-btn:active{ transform: translateY(-1px) scale(1.01); }
 .action-btn i{font-size:16px;}
+
+/* گزینه ۱: رنگ متمایز برای دو دکمه */
+.action-btn.video{    /* آموزش ویدیویی: فیروزه‌ای */
+  background: linear-gradient(135deg, var(--accent2), #00bfff);
+}
+.action-btn.download{ /* دانلود آخرین ورژن: بنفش */
+  background: linear-gradient(135deg, var(--accent1), #7b70ff);
+}
+
 .tutorial-title{text-align:center;margin-bottom:8px;color:var(--text);display:flex;flex-direction:column;align-items:center;gap:8px;}
 .tutorial-title .logo-wrap{width:48px;height:48px;}
 .card, .card *, .step-card, .step-card *{font-weight:700!important;}
 
-/* animated title like original */
+/* عنوان انیمیشنی */
 .title{
   text-align:center;
   margin:18px 0;
@@ -72,9 +107,7 @@ body{
   -webkit-background-clip:text;
   -webkit-text-fill-color:transparent;
 }
-@keyframes fadeword{
-  to{opacity:1;transform:translateY(0);}
-}
+@keyframes fadeword{ to{opacity:1;transform:translateY(0);} }
 </style>
 </head>
 <body>
@@ -117,7 +150,7 @@ body{
 <script>
 /* لینک‌های لوگو — اینجا قرار گرفته‌اند */
 const osLogos={Android:"https://raw.githubusercontent.com/logi443/miniapp/refs/heads/main/Android.svg",iOS:"https://raw.githubusercontent.com/logi443/miniapp/refs/heads/main/AppleFilled.svg",Windows:"https://raw.githubusercontent.com/logi443/miniapp/refs/heads/main/WindowsFilled.svg",macOS:"https://raw.githubusercontent.com/logi443/miniapp/refs/heads/main/Macosx.svg"};
-/* اضافه شد: Npv Tunnel */
+/* شامل Npv Tunnel */
 const appLogos={v2rayNg:"https://raw.githubusercontent.com/logi443/miniapp/refs/heads/main/a.png",v2box:"https://raw.githubusercontent.com/logi443/miniapp/refs/heads/main/unnamed.png",Shadowrocket:"https://raw.githubusercontent.com/logi443/miniapp/refs/heads/main/gcxQW6z3_400x400.jpg",Streisand:"https://raw.githubusercontent.com/logi443/miniapp/refs/heads/main/9250996.64.webp",V2rayN:"https://raw.githubusercontent.com/logi443/miniapp/refs/heads/main/a.png","Npv Tunnel":"https://raw.githubusercontent.com/logi443/miniapp/refs/heads/main/60x60bb.jpg"};
 
 /* ویدئوی آموزشی — خالی باشد دکمه نشان داده نمی‌شود */
@@ -128,13 +161,13 @@ const videoLinks={
   macOS:{Streisand:"",Shadowrocket:""}
 };
 
-/* اضافه شد: Npv Tunnel برای Android و iOS */
+/* برنامه‌ها برای هر سیستم‌عامل */
 const appsByOS={Android:["v2rayNg","v2box","Npv Tunnel"],iOS:["v2box","Shadowrocket","Streisand","Npv Tunnel"],Windows:["V2rayN"],macOS:["Streisand","Shadowrocket"]};
 
-/* لینک دانلود — placeholder برای Npv Tunnel هم اضافه شد */
+/* لینک دانلود‌ها */
 const downloadLinks={Android:{v2rayNg:"https://logi443.github.io/v2ray",v2box:"https://play.google.com/store/apps/details?id=dev.hexasoftware.v2box","Npv Tunnel":"https://play.google.com/store/apps/details?id=com.napsternetlabs.napsternetv"},iOS:{v2box:"https://apps.apple.com/app/id6446814690",Shadowrocket:"https://apps.apple.com/app/id932747118",Streisand:"https://apps.apple.com/app/id6450534064","Npv Tunnel":"https://apps.apple.com/app/id1629465476"},Windows:{V2rayN:"https://github.com/2dust/v2rayN/releases/download/7.15.6/v2rayN-windows-64-SelfContained.zip"},macOS:{Streisand:"https://apps.apple.com/us/app/streisand/id6450534064",Shadowrocket:"https://apps.apple.com/app/id932747118"}};
 
-/* آموزش‌ها — اضافه شد: Npv Tunnel */
+/* آموزش‌ها */
 const tutorials={
   Android:{
     v2rayNg:["منوی همبرگری ☰ بالا را بزنید.","از منوی همبرگری گزینه Setting را انتخاب کنید.","گزینه تنظیمات پیشرفته را بزنید و گزینه Allow insecure را فعال کنید.","به صفحه اصلی برگردید، مثبت بالا را بزنید و گزینه وارد کردن از کلیپ‌بورد را انتخاب کنید."],
@@ -164,17 +197,101 @@ const tutorials={
   }
 };
 
+/* --- Helpers for staggered animations --- */
+function animateStagger(container){
+  // apply increasing delay to each child with .stagger-item
+  const items = container.querySelectorAll('.stagger-item');
+  items.forEach((el, i)=>{
+    el.style.animationDelay = (i * 150) + 'ms';
+  });
+}
+
 /* Tools */
 function capitalize(s){return s.charAt(0).toUpperCase()+s.slice(1).toLowerCase();}
 function makeLogo(url){const wrap=document.createElement('span');wrap.className='logo-wrap';if(url){const img=document.createElement('img');img.src=url;img.alt='logo';wrap.appendChild(img);}return wrap;}
 
-(function renderOSButtons(){const grid=document.getElementById('os-grid');Object.keys(appsByOS).forEach(os=>{const btn=document.createElement('button');btn.className='btn';const logo=makeLogo(osLogos[os]||'');const label=document.createElement('span');label.textContent=os;btn.appendChild(logo);btn.appendChild(label);btn.onclick=()=>selectOS(os);grid.appendChild(btn);});})();
+/* Render OS buttons on load with stagger */
+(function renderOSButtons(){
+  const grid=document.getElementById('os-grid');
+  Object.keys(appsByOS).forEach(os=>{
+    const btn=document.createElement('button');btn.className='btn stagger-item';
+    const logo=makeLogo(osLogos[os]||'');const label=document.createElement('span');label.textContent=os;
+    btn.appendChild(logo);btn.appendChild(label);btn.onclick=()=>selectOS(os);grid.appendChild(btn);
+  });
+  animateStagger(grid);
+})();
 
-function selectOS(os){document.getElementById('step-os').style.display='none';document.getElementById('step-app').style.display='block';const grid=document.getElementById('apps');grid.innerHTML='';(appsByOS[os]||[]).forEach(app=>{const btn=document.createElement('button');btn.className='btn';const logo=makeLogo(appLogos[app]||'');const label=document.createElement('span');label.textContent=capitalize(app);btn.appendChild(logo);btn.appendChild(label);btn.onclick=()=>selectApp(os,app);grid.appendChild(btn);});}
+function selectOS(os){
+  document.getElementById('step-os').style.display='none';
+  document.getElementById('step-app').style.display='block';
+  const grid=document.getElementById('apps');grid.innerHTML='';
+  (appsByOS[os]||[]).forEach(app=>{
+    const btn=document.createElement('button');btn.className='btn stagger-item';
+    const logo=makeLogo(appLogos[app]||'');const label=document.createElement('span');label.textContent=capitalize(app);
+    btn.appendChild(logo);btn.appendChild(label);btn.onclick=()=>selectApp(os,app);grid.appendChild(btn);
+  });
+  animateStagger(grid);
+}
 
-function selectApp(os,app){document.getElementById('step-app').style.display='none';document.getElementById('step-tutorial').style.display='block';renderTutorial(os,app);}
+function selectApp(os,app){
+  document.getElementById('step-app').style.display='none';
+  document.getElementById('step-tutorial').style.display='block';
+  renderTutorial(os,app);
+}
 
-function renderTutorial(os,app){const title=document.getElementById('tutorial-title');const logo=document.getElementById('tutorial-logo');const text=document.getElementById('tutorial-title-text');title.style.display='flex';text.textContent='آموزش گام‌به‌گام برنامهٔ '+capitalize(app);logo.src=appLogos[app]||'';logo.style.display=appLogos[app]?'block':'none';const wrap=document.getElementById('tutorial-area');wrap.innerHTML='';(tutorials[os]&&tutorials[os][app]||[]).forEach((t,i)=>{const c=document.createElement('div');c.className='step-card';c.innerHTML='<div class=\"step-num\">'+(i+1)+'</div><div class=\"step-body\"><p>'+t+'</p></div>';wrap.appendChild(c);});const actions=document.getElementById('actions');actions.innerHTML='';const vlink=(videoLinks[os]&&videoLinks[os][app])?videoLinks[os][app]:"";if(vlink){const v=document.createElement('a');v.className='action-btn';v.href=vlink;v.target='_blank';v.rel='noopener';v.innerHTML='<i class=\"fa-solid fa-play\"></i> آموزش تصویری';actions.appendChild(v);}const link=(downloadLinks[os]&&downloadLinks[os][app])?downloadLinks[os][app]:'#';const d=document.createElement('a');d.className='action-btn';d.href=link;d.target='_blank';d.rel='noopener';d.innerHTML='<i class=\"fa-solid fa-download\"></i> دانلود آخرین ورژن';actions.appendChild(d);}
-function goBack(step){if(step===1){document.getElementById('step-os').style.display='block';document.getElementById('step-app').style.display='none';}else if(step===2){document.getElementById('step-app').style.display='block';document.getElementById('step-tutorial').style.display='none';}}
+function renderTutorial(os,app){
+  const title=document.getElementById('tutorial-title');
+  const logo=document.getElementById('tutorial-logo');
+  const text=document.getElementById('tutorial-title-text');
+  title.style.display='flex';
+  text.textContent='آموزش گام‌به‌گام برنامهٔ '+capitalize(app);
+  logo.src=appLogos[app]||''; logo.style.display=appLogos[app]?'block':'none';
+
+  const wrap=document.getElementById('tutorial-area'); wrap.innerHTML='';
+
+  // Steps appear sequentially (one-by-one)
+  const steps=(tutorials[os]&&tutorials[os][app])?tutorials[os][app]:[];
+  let delay=0;
+  steps.forEach((t,i)=>{
+    const c=document.createElement('div'); c.className='step-card step-appear';
+    c.style.animationDelay = (i * 160) + 'ms';
+    c.innerHTML='<div class="step-num">'+(i+1)+'</div><div class="step-body"><p>'+t+'</p></div>';
+    wrap.appendChild(c);
+  });
+
+  // then show actions after steps
+  const actions=document.getElementById('actions'); actions.innerHTML='';
+  actions.classList.remove('actions-appear');
+  void actions.offsetWidth; // reflow
+  actions.classList.add('actions-appear');
+
+  const vlink=(videoLinks[os]&&videoLinks[os][app])?videoLinks[os][app]:"";
+  if(vlink){
+    const v=document.createElement('a');
+    v.className='action-btn video';
+    v.href=vlink; v.target='_blank'; v.rel='noopener';
+    v.innerHTML='<i class="fa-solid fa-play"></i> آموزش تصویری';
+    actions.appendChild(v);
+  }
+
+  const link=(downloadLinks[os]&&downloadLinks[os][app])?downloadLinks[os][app]:'#';
+  const d=document.createElement('a');
+  d.className='action-btn download';
+  d.href=link; d.target='_blank'; d.rel='noopener';
+  d.innerHTML='<i class="fa-solid fa-download"></i> دانلود آخرین ورژن';
+  actions.appendChild(d);
+}
+
+function goBack(step){
+  if(step===1){
+    document.getElementById('step-os').style.display='block';
+    document.getElementById('step-app').style.display='none';
+    // re-run stagger for OS grid (already has stagger-item)
+    animateStagger(document.getElementById('os-grid'));
+  }else if(step===2){
+    document.getElementById('step-app').style.display='block';
+    document.getElementById('step-tutorial').style.display='none';
+  }
+}
 </script>
 </body></html>
